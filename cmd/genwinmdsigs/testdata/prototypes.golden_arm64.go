@@ -55,13 +55,13 @@ type CONTEXT struct {
 	Lr           uint64
 	Sp           uint64
 	Pc           uint64
-	V            []ARM64_NT_NEON128
+	V            [32]ARM64_NT_NEON128
 	Fpcr         uint32
 	Fpsr         uint32
-	Bcr          []uint32
-	Bvr          []uint64
-	Wcr          []uint32
-	Wvr          []uint64
+	Bcr          [8]uint32
+	Bvr          [8]uint64
+	Wcr          [2]uint32
+	Wvr          [2]uint64
 }
 
 type PGET_RUNTIME_FUNCTION_CALLBACK uintptr
@@ -97,7 +97,7 @@ type UNWIND_HISTORY_TABLE struct {
 	Once        uint8
 	LowAddress  uintptr
 	HighAddress uintptr
-	Entry       []UNWIND_HISTORY_TABLE_ENTRY
+	Entry       [12]UNWIND_HISTORY_TABLE_ENTRY
 }
 
 type LOADED_IMAGE struct {
@@ -131,8 +131,8 @@ type XSAVE_FORMAT struct {
 	Reserved3      uint16
 	MxCsr          uint32
 	MxCsr_Mask     uint32
-	FloatRegisters []M128A
-	XmmRegisters   []M128A
-	Reserved4      []uint8
+	FloatRegisters [8]M128A
+	XmmRegisters   [16]M128A
+	Reserved4      [96]uint8
 }
 

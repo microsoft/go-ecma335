@@ -61,7 +61,7 @@ type CONTEXT struct {
 	EFlags            uint32
 	Esp               uint32
 	SegSs             uint32
-	ExtendedRegisters []uint8
+	ExtendedRegisters [512]uint8
 }
 
 type LOADED_IMAGE struct {
@@ -87,10 +87,10 @@ type STACKFRAME struct {
 	AddrFrame      ADDRESS
 	AddrStack      ADDRESS
 	FuncTableEntry unsafe.Pointer
-	Params         []uint32
+	Params         [4]uint32
 	Far            BOOL
 	Virtual        BOOL
-	Reserved       []uint32
+	Reserved       [3]uint32
 	KdHelp         KDHELP
 	AddrBStore     ADDRESS
 }
@@ -119,7 +119,7 @@ type IMAGEHLP_SYMBOL struct {
 	Size          uint32
 	Flags         uint32
 	MaxNameLength uint32
-	Name          []CHAR
+	Name          [1]CHAR
 }
 
 type IMAGEHLP_MODULE struct {
@@ -130,9 +130,9 @@ type IMAGEHLP_MODULE struct {
 	CheckSum        uint32
 	NumSyms         uint32
 	SymType         SYM_TYPE
-	ModuleName      []CHAR
-	ImageName       []CHAR
-	LoadedImageName []CHAR
+	ModuleName      [32]CHAR
+	ImageName       [256]CHAR
+	LoadedImageName [256]CHAR
 }
 
 type IMAGEHLP_MODULEW struct {
@@ -143,9 +143,9 @@ type IMAGEHLP_MODULEW struct {
 	CheckSum        uint32
 	NumSyms         uint32
 	SymType         SYM_TYPE
-	ModuleName      []uint16
-	ImageName       []uint16
-	LoadedImageName []uint16
+	ModuleName      [32]uint16
+	ImageName       [256]uint16
+	LoadedImageName [256]uint16
 }
 
 type IMAGEHLP_LINE struct {
@@ -164,7 +164,7 @@ type FLOATING_SAVE_AREA struct {
 	ErrorSelector uint32
 	DataOffset    uint32
 	DataSelector  uint32
-	RegisterArea  []uint8
+	RegisterArea  [80]uint8
 	Spare0        uint32
 }
 
@@ -186,6 +186,6 @@ type KDHELP struct {
 	KiUserExceptionDispatcher uint32
 	StackBase                 uint32
 	StackLimit                uint32
-	Reserved                  []uint32
+	Reserved                  [5]uint32
 }
 

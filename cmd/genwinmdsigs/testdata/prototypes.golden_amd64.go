@@ -64,7 +64,7 @@ type CONTEXT struct {
 	R15                  uint64
 	Rip                  uint64
 	FltSave              XSAVE_FORMAT
-	VectorRegister       []M128A
+	VectorRegister       [26]M128A
 	VectorControl        uint64
 	DebugControl         uint64
 	LastBranchToRip      uint64
@@ -76,8 +76,8 @@ type CONTEXT struct {
 type PGET_RUNTIME_FUNCTION_CALLBACK uintptr
 
 type KNONVOLATILE_CONTEXT_POINTERS struct {
-	FloatingContext []*M128A
-	IntegerContext  []*uint64
+	FloatingContext [16]*M128A
+	IntegerContext  [16]*uint64
 }
 
 type UNWIND_HISTORY_TABLE struct {
@@ -88,7 +88,7 @@ type UNWIND_HISTORY_TABLE struct {
 	Once        uint8
 	LowAddress  uintptr
 	HighAddress uintptr
-	Entry       []UNWIND_HISTORY_TABLE_ENTRY
+	Entry       [12]UNWIND_HISTORY_TABLE_ENTRY
 }
 
 type LOADED_IMAGE struct {
@@ -122,9 +122,9 @@ type XSAVE_FORMAT struct {
 	Reserved3      uint16
 	MxCsr          uint32
 	MxCsr_Mask     uint32
-	FloatRegisters []M128A
-	XmmRegisters   []M128A
-	Reserved4      []uint8
+	FloatRegisters [8]M128A
+	XmmRegisters   [16]M128A
+	Reserved4      [96]uint8
 }
 
 type UNWIND_HISTORY_TABLE_ENTRY struct {

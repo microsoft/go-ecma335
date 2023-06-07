@@ -487,7 +487,13 @@ func (c *Context) writeType(w io.StringWriter, p *winmd.SigType, arch Arch) erro
 				markVisited(p)
 				return visitType(&v)
 			case winmd.SigArray:
-				w.WriteString("[]")
+				for i := 0; i < int(v.Rank); i++ {
+					if i < len(v.Sizes) {
+						w.WriteString("[" + strconv.Itoa(int(v.Sizes[i])) + "]")
+					} else {
+						w.WriteString("[]")
+					}
+				}
 				markVisited(p)
 				return visitType(&v.Type)
 

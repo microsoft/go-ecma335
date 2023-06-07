@@ -2141,8 +2141,8 @@ type WIN32_FIND_DATAA struct {
 	NFileSizeLow       uint32
 	DwReserved0        uint32
 	DwReserved1        uint32
-	CFileName          []CHAR
-	CAlternateFileName []CHAR
+	CFileName          [260]CHAR
+	CAlternateFileName [14]CHAR
 }
 
 type WIN32_FIND_DATAW struct {
@@ -2154,8 +2154,8 @@ type WIN32_FIND_DATAW struct {
 	NFileSizeLow       uint32
 	DwReserved0        uint32
 	DwReserved1        uint32
-	CFileName          []uint16
-	CAlternateFileName []uint16
+	CFileName          [260]uint16
+	CAlternateFileName [14]uint16
 }
 
 type FINDEX_INFO_LEVELS int32
@@ -3261,7 +3261,7 @@ type WIN_CERTIFICATE struct {
 	DwLength         uint32
 	WRevision        uint16
 	WCertificateType uint16
-	BCertificate     []uint8
+	BCertificate     [1]uint8
 }
 
 type LARGE_INTEGER struct {
@@ -3308,7 +3308,7 @@ type WOW64_CONTEXT struct {
 	EFlags            uint32
 	Esp               uint32
 	SegSs             uint32
-	ExtendedRegisters []uint8
+	ExtendedRegisters [512]uint8
 }
 
 type WOW64_LDT_ENTRY struct {
@@ -3326,7 +3326,7 @@ type EXCEPTION_RECORD struct {
 	ExceptionRecord      *EXCEPTION_RECORD
 	ExceptionAddress     unsafe.Pointer
 	NumberParameters     uint32
-	ExceptionInformation []uintptr
+	ExceptionInformation [15]uintptr
 }
 
 type EXCEPTION_POINTERS struct {
@@ -3347,7 +3347,7 @@ type IMAGE_NT_HEADERS32 struct {
 }
 
 type IMAGE_SECTION_HEADER struct {
-	Name                 []uint8
+	Name                 [8]uint8
 	PhysicalAddress      uint32
 	VirtualAddress       uint32
 	SizeOfRawData        uint32
@@ -3483,7 +3483,7 @@ type LPTOP_LEVEL_EXCEPTION_FILTER uintptr
 type WAITCHAIN_NODE_INFO struct {
 	ObjectType   WCT_OBJECT_TYPE
 	ObjectStatus WCT_OBJECT_STATUS
-	ObjectName   []uint16
+	ObjectName   [128]uint16
 	Timeout      LARGE_INTEGER
 	Alertable    BOOL
 }
@@ -3582,10 +3582,10 @@ type STACKFRAME64 struct {
 	AddrStack      ADDRESS64
 	AddrBStore     ADDRESS64
 	FuncTableEntry unsafe.Pointer
-	Params         []uint64
+	Params         [4]uint64
 	Far            BOOL
 	Virtual        BOOL
-	Reserved       []uint64
+	Reserved       [3]uint64
 	KdHelp         KDHELP64
 }
 
@@ -3596,10 +3596,10 @@ type STACKFRAME_EX struct {
 	AddrStack          ADDRESS64
 	AddrBStore         ADDRESS64
 	FuncTableEntry     unsafe.Pointer
-	Params             []uint64
+	Params             [4]uint64
 	Far                BOOL
 	Virtual            BOOL
-	Reserved           []uint64
+	Reserved           [3]uint64
 	KdHelp             KDHELP64
 	StackFrameSize     uint32
 	InlineFrameContext uint32
@@ -3644,7 +3644,7 @@ type IMAGEHLP_SYMBOL64 struct {
 	Size          uint32
 	Flags         uint32
 	MaxNameLength uint32
-	Name          []CHAR
+	Name          [1]CHAR
 }
 
 type IMAGEHLP_MODULE64 struct {
@@ -3655,12 +3655,12 @@ type IMAGEHLP_MODULE64 struct {
 	CheckSum        uint32
 	NumSyms         uint32
 	SymType         SYM_TYPE
-	ModuleName      []CHAR
-	ImageName       []CHAR
-	LoadedImageName []CHAR
-	LoadedPdbName   []CHAR
+	ModuleName      [32]CHAR
+	ImageName       [256]CHAR
+	LoadedImageName [256]CHAR
+	LoadedPdbName   [256]CHAR
 	CVSig           uint32
-	CVData          []CHAR
+	CVData          [780]CHAR
 	PdbSig          uint32
 	PdbSig70        Guid
 	PdbAge          uint32
@@ -3683,12 +3683,12 @@ type IMAGEHLP_MODULEW64 struct {
 	CheckSum        uint32
 	NumSyms         uint32
 	SymType         SYM_TYPE
-	ModuleName      []uint16
-	ImageName       []uint16
-	LoadedImageName []uint16
-	LoadedPdbName   []uint16
+	ModuleName      [32]uint16
+	ImageName       [256]uint16
+	LoadedImageName [256]uint16
+	LoadedPdbName   [256]uint16
 	CVSig           uint32
-	CVData          []uint16
+	CVData          [780]uint16
 	PdbSig          uint32
 	PdbSig70        Guid
 	PdbAge          uint32
@@ -3756,7 +3756,7 @@ type PENUMSOURCEFILETOKENSCALLBACK uintptr
 type SYMBOL_INFO struct {
 	SizeOfStruct uint32
 	TypeIndex    uint32
-	Reserved     []uint64
+	Reserved     [2]uint64
 	Index        uint32
 	Size         uint32
 	ModBase      uint64
@@ -3768,13 +3768,13 @@ type SYMBOL_INFO struct {
 	Tag          uint32
 	NameLen      uint32
 	MaxNameLen   uint32
-	Name         []CHAR
+	Name         [1]CHAR
 }
 
 type SYMBOL_INFOW struct {
 	SizeOfStruct uint32
 	TypeIndex    uint32
-	Reserved     []uint64
+	Reserved     [2]uint64
 	Index        uint32
 	Size         uint32
 	ModBase      uint64
@@ -3786,7 +3786,7 @@ type SYMBOL_INFOW struct {
 	Tag          uint32
 	NameLen      uint32
 	MaxNameLen   uint32
-	Name         []uint16
+	Name         [1]uint16
 }
 
 type IMAGEHLP_STACK_FRAME struct {
@@ -3796,8 +3796,8 @@ type IMAGEHLP_STACK_FRAME struct {
 	StackOffset        uint64
 	BackingStoreOffset uint64
 	FuncTableEntry     uint64
-	Params             []uint64
-	Reserved           []uint64
+	Params             [4]uint64
+	Reserved           [5]uint64
 	Virtual            BOOL
 	Reserved2          uint32
 }
@@ -3872,12 +3872,12 @@ type IMAGEHLP_GET_TYPE_INFO_PARAMS struct {
 
 type SYMSRV_INDEX_INFO struct {
 	Sizeofstruct uint32
-	File         []CHAR
+	File         [261]CHAR
 	Stripped     BOOL
 	Timestamp    uint32
 	Size         uint32
-	Dbgfile      []CHAR
-	Pdbfile      []CHAR
+	Dbgfile      [261]CHAR
+	Pdbfile      [261]CHAR
 	Guid         Guid
 	Sig          uint32
 	Age          uint32
@@ -3885,12 +3885,12 @@ type SYMSRV_INDEX_INFO struct {
 
 type SYMSRV_INDEX_INFOW struct {
 	Sizeofstruct uint32
-	File         []uint16
+	File         [261]uint16
 	Stripped     BOOL
 	Timestamp    uint32
 	Size         uint32
-	Dbgfile      []uint16
-	Pdbfile      []uint16
+	Dbgfile      [261]uint16
+	Pdbfile      [261]uint16
 	Guid         Guid
 	Sig          uint32
 	Age          uint32
@@ -3935,7 +3935,7 @@ type OFSTRUCT struct {
 	NErrCode   uint16
 	Reserved1  uint16
 	Reserved2  uint16
-	SzPathName []CHAR
+	SzPathName [128]CHAR
 }
 
 type PFE_EXPORT_FUNC uintptr
@@ -4220,7 +4220,7 @@ type CLS_CONTAINER_INFORMATION struct {
 	ContainerSize        int64
 	FileNameActualLength uint32
 	FileNameLength       uint32
-	FileName             []uint16
+	FileName             [256]uint16
 	State                uint32
 	PhysicalContainerId  uint32
 	LogicalContainerId   uint32
@@ -4492,7 +4492,7 @@ type WOW64_FLOATING_SAVE_AREA struct {
 	ErrorSelector uint32
 	DataOffset    uint32
 	DataSelector  uint32
-	RegisterArea  []uint8
+	RegisterArea  [80]uint8
 	Cr0NpxState   uint32
 }
 
@@ -4537,7 +4537,7 @@ type IMAGE_OPTIONAL_HEADER32 struct {
 	SizeOfHeapCommit            uint32
 	LoaderFlags                 uint32
 	NumberOfRvaAndSizes         uint32
-	DataDirectory               []IMAGE_DATA_DIRECTORY
+	DataDirectory               [16]IMAGE_DATA_DIRECTORY
 }
 
 type IMAGE_OPTIONAL_HEADER64 struct {
@@ -4570,7 +4570,7 @@ type IMAGE_OPTIONAL_HEADER64 struct {
 	SizeOfHeapCommit            uint64
 	LoaderFlags                 uint32
 	NumberOfRvaAndSizes         uint32
-	DataDirectory               []IMAGE_DATA_DIRECTORY
+	DataDirectory               [16]IMAGE_DATA_DIRECTORY
 }
 
 type IMAGE_LOAD_CONFIG_CODE_INTEGRITY struct {
@@ -4584,7 +4584,7 @@ type SID struct {
 	Revision            uint8
 	SubAuthorityCount   uint8
 	IdentifierAuthority SID_IDENTIFIER_AUTHORITY
-	SubAuthority        []uint32
+	SubAuthority        [1]uint32
 }
 
 type WCT_OBJECT_TYPE int32
@@ -4657,7 +4657,7 @@ type KDHELP64 struct {
 	RetpolineStubFunctionTable     uint64
 	RetpolineStubOffset            uint32
 	RetpolineStubSize              uint32
-	Reserved0                      []uint64
+	Reserved0                      [2]uint64
 }
 
 type SYM_TYPE int32
@@ -4860,7 +4860,7 @@ type IMAGE_DATA_DIRECTORY struct {
 }
 
 type SID_IDENTIFIER_AUTHORITY struct {
-	Value []uint8
+	Value [6]uint8
 }
 
 type ADDRESS_MODE int32
