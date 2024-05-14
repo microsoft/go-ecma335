@@ -28,7 +28,7 @@ func TestContext_writeType_cycle(t *testing.T) {
 	// we do that.
 	var b strings.Builder
 	var c Context
-	if err := c.writeType(&b, &p1); err == nil {
+	if err := c.writeType(&b, &p1, ArchAll); err == nil {
 		t.Fatalf("expected error due to detected cycle, but no error was returned")
 	} else if !strings.Contains(err.Error(), "cycle") {
 		t.Fatalf("got an error, but not a cycle detection error: %v", err)

@@ -67,44 +67,63 @@ func Run() error {
 		return err
 	}
 
-	var b strings.Builder
+	b := map[genwinsyscallproto.Arch]*strings.Builder{
+		genwinsyscallproto.Arch386:   {},
+		genwinsyscallproto.ArchAMD64: {},
+		genwinsyscallproto.ArchARM64: {},
+		genwinsyscallproto.ArchAll:   {},
+		genwinsyscallproto.ArchNone:  {},
+	}
 
-	if err := writePrototypes(&b, f, filterRegexp); err != nil {
+	if err := writePrototypes(b, f, filterRegexp); err != nil {
 		return err
 	}
 
-	content := b.String()
-	var finalContent string
-
-	if contentTemplate != nil {
-		var templateBuilder strings.Builder
-		if err := contentTemplate.Execute(&templateBuilder, struct{ SysCalls string }{content}); err != nil {
-			return err
+	for arch, w := range b {
+		if w.Len() == 0 {
+			continue
 		}
-		finalContent = templateBuilder.String()
-	} else {
-		finalContent = content
-	}
+		content := w.String()
+		var finalContent string
 
-	formattedContent, err := format.Source([]byte(finalContent))
-	if err != nil {
-		log.Printf("Unable to format generated code, writing unformatted code instead. Error: %v", err)
-		formattedContent = []byte(finalContent)
-	}
+		if contentTemplate != nil {
+			var templateBuilder strings.Builder
+			if err := contentTemplate.Execute(&templateBuilder, struct {
+				SysCalls string
+				Arch     string
+			}{content, arch.String()}); err != nil {
+				return err
+			}
+			finalContent = templateBuilder.String()
+		} else {
+			finalContent = content
+		}
 
-	end := time.Now()
-	log.Printf("Time elapsed to produce sys signatures: %v\n", end.Sub(start))
+		formattedContent, err := format.Source([]byte(finalContent))
+		if err != nil {
+			log.Printf("Unable to format generated code, writing unformatted code instead. Error: %v", err)
+			formattedContent = []byte(finalContent)
+		}
 
-	if *output != "" {
-		return os.WriteFile(*output, formattedContent, 0666)
+		end := time.Now()
+		log.Printf("Time elapsed to produce sys signatures: %v\n", end.Sub(start))
+
+		if *output != "" {
+			target := *output
+			if arch != genwinsyscallproto.ArchAll {
+				target = strings.TrimSuffix(target, ".go") + "_" + arch.String() + ".go"
+			}
+			os.WriteFile(target, formattedContent, 0666)
+		} else {
+			log.Printf("Printing signature results for %s because no output path was specified:\n", arch)
+			log.Println("---")
+			log.Println(finalContent)
+		}
 	}
-	log.Println("Printing signature results because no output path was specified:")
-	log.Println("---")
-	log.Println(finalContent)
 	return nil
 }
 
-func writePrototypes(b *strings.Builder, f *winmd.Metadata, filterRegexp *regexp.Regexp) error {
+func writePrototypes(b map[genwinsyscallproto.Arch]*strings.Builder, f *winmd.Metadata, filterRegexp *regexp.Regexp) error {
 	context, err := genwinsyscallproto.NewContext(f)
 	if err != nil {
 		return err
@@ -120,7 +139,7 @@ func writePrototypes(b *strings.Builder, f *winmd.Metadata, filterRegexp *regexp
 			continue
 		}
 
-		firstMethod := true
+		archSeen := make(map[genwinsyscallproto.Arch]bool)
 		for j := r.MethodList.Start; j < r.MethodList.End; j++ {
 			md, err := f.Tables.MethodDef.Record(j)
 			if err != nil {
@@ -131,25 +150,30 @@ func writePrototypes(b *strings.Builder, f *winmd.Metadata, filterRegexp *regexp
 				continue
 			}
 
-			// Write a comment describing this chunk of methods.
-			if firstMethod {
-				firstMethod = false
-				b.WriteString("\n\n// APIs for ")
-				b.WriteString(r.Namespace.String())
-			}
-			b.WriteString("\n")
+			supportedArches := context.MethodDefSupportedArch(j)
+			for _, arch := range supportedArches.Unique() {
+				w := b[arch]
 
-			if err := context.WriteMethod(b, j, md); err != nil {
-				// Include context in the error for diag purposes.
-				// writeSys may have partially written into b. This is actually convenient for diag.
-				lines := strings.Split(b.String(), "\n")
-				if len(lines) > 5 {
-					lines = lines[len(lines)-5:]
+				// Write a comment describing this chunk of methods.
+				if !archSeen[arch] {
+					archSeen[arch] = true
+					w.WriteString("\n\n// APIs for ")
+					w.WriteString(r.Namespace.String())
 				}
+				w.WriteString("\n")
 
-				return fmt.Errorf(
-					"error context: \n---\n%v\n---\nfailed to write sys line for %v.Apis method %v: %v",
-					strings.Join(lines, "\n"), r.Namespace, md.Name, err)
+				if err := context.WriteMethod(w, j, md, arch); err != nil {
+					// Include context in the error for diag purposes.
+					// writeSys may have partially written into b. This is actually convenient for diag.
+					lines := strings.Split(w.String(), "\n")
+					if len(lines) > 5 {
+						lines = lines[len(lines)-5:]
+					}
+
+					return fmt.Errorf(
+						"error context: \n---\n%v\n---\nfailed to write sys line for %v.Apis method %v: %v",
+						strings.Join(lines, "\n"), r.Namespace, md.Name, err)
+				}
 			}
 		}
 	}

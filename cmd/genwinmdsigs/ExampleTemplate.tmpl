@@ -6,11 +6,15 @@ package windowsgenerated
 import (
     "unsafe"
 
-	"golang.org/x/sys/windows"
+{{ if (eq .Arch "all") }}
+    "golang.org/x/sys/windows"
+{{ end }}
 )
 
 var _ unsafe.Pointer
 
+{{ if (eq .Arch "all") }}
 type Guid windows.GUID
+{{ end }}
 
 {{.SysCalls}}

@@ -812,7 +812,284 @@
 //sys	GenerateDerivedKey(hCrypto *INFORMATIONCARD_CRYPTO_HANDLE, cbLabel uint32, pLabel *uint8, cbNonce uint32, pNonce *uint8, derivedKeyLength uint32, offset uint32, algId *PWSTRElement, pcbKey *uint32, ppKey **uint8) (r HRESULT) = infocardapi.GenerateDerivedKey
 //sys	GetBrowserToken(dwParamType uint32, pParam unsafe.Pointer, pcbToken *uint32, ppToken **uint8) (r HRESULT) = infocardapi.GetBrowserToken
 
-// Types used in generated APIs
+// APIs for Windows.Win32.System.Diagnostics.Debug
+//sys	DebugConnect(RemoteOptions *PSTRElement, InterfaceId *Guid, Interface *unsafe.Pointer) (r HRESULT) = dbgeng.DebugConnect
+//sys	DebugConnectWide(RemoteOptions *PWSTRElement, InterfaceId *Guid, Interface *unsafe.Pointer) (r HRESULT) = dbgeng.DebugConnectWide
+//sys	DebugCreate(InterfaceId *Guid, Interface *unsafe.Pointer) (r HRESULT) = dbgeng.DebugCreate
+//sys	DebugCreateEx(InterfaceId *Guid, DbgEngOptions uint32, Interface *unsafe.Pointer) (r HRESULT) = dbgeng.DebugCreateEx
+//sys	CreateDataModelManager(debugHost *IDebugHost, manager **IDataModelManager) (r HRESULT) = dbgmodel.CreateDataModelManager
+//sys	ReadProcessMemory(hProcess HANDLE, lpBaseAddress unsafe.Pointer, lpBuffer unsafe.Pointer, nSize uintptr, lpNumberOfBytesRead *uintptr) (r BOOL, err error)
+//sys	WriteProcessMemory(hProcess HANDLE, lpBaseAddress unsafe.Pointer, lpBuffer unsafe.Pointer, nSize uintptr, lpNumberOfBytesWritten *uintptr) (r BOOL, err error)
+//sys	GetThreadContext(hThread HANDLE, lpContext *CONTEXT) (r BOOL, err error)
+//sys	SetThreadContext(hThread HANDLE, lpContext *CONTEXT) (r BOOL, err error)
+//sys	FlushInstructionCache(hProcess HANDLE, lpBaseAddress unsafe.Pointer, dwSize uintptr) (r BOOL, err error)
+//sys	Wow64GetThreadContext(hThread HANDLE, lpContext *WOW64_CONTEXT) (r BOOL, err error)
+//sys	Wow64SetThreadContext(hThread HANDLE, lpContext *WOW64_CONTEXT) (r BOOL, err error)
+//sys	RtlCaptureStackBackTrace(FramesToSkip uint32, FramesToCapture uint32, BackTrace *unsafe.Pointer, BackTraceHash *uint32) (r uint16)
+//sys	RtlCaptureContext(ContextRecord *CONTEXT)
+//sys	RtlUnwind(TargetFrame unsafe.Pointer, TargetIp unsafe.Pointer, ExceptionRecord *EXCEPTION_RECORD, ReturnValue unsafe.Pointer)
+//sys	RtlRestoreContext(ContextRecord *CONTEXT, ExceptionRecord *EXCEPTION_RECORD)
+//sys	RtlRaiseException(ExceptionRecord *EXCEPTION_RECORD)
+//sys	RtlPcToFileHeader(PcValue unsafe.Pointer, BaseOfImage *unsafe.Pointer) (r unsafe.Pointer)
+//sys	IsDebuggerPresent() (r BOOL)
+//sys	DebugBreak()
+//sys	OutputDebugStringA(lpOutputString *PSTRElement)
+//sys	OutputDebugStringW(lpOutputString *PWSTRElement)
+//sys	ContinueDebugEvent(dwProcessId uint32, dwThreadId uint32, dwContinueStatus uint32) (r BOOL, err error)
+//sys	WaitForDebugEvent(lpDebugEvent *DEBUG_EVENT, dwMilliseconds uint32) (r BOOL, err error)
+//sys	DebugActiveProcess(dwProcessId uint32) (r BOOL, err error)
+//sys	DebugActiveProcessStop(dwProcessId uint32) (r BOOL, err error)
+//sys	CheckRemoteDebuggerPresent(hProcess HANDLE, pbDebuggerPresent *BOOL) (r BOOL, err error)
+//sys	WaitForDebugEventEx(lpDebugEvent *DEBUG_EVENT, dwMilliseconds uint32) (r BOOL, err error)
+//sys	EncodePointer(Ptr unsafe.Pointer) (r unsafe.Pointer)
+//sys	DecodePointer(Ptr unsafe.Pointer) (r unsafe.Pointer)
+//sys	EncodeSystemPointer(Ptr unsafe.Pointer) (r unsafe.Pointer)
+//sys	DecodeSystemPointer(Ptr unsafe.Pointer) (r unsafe.Pointer)
+//sys	EncodeRemotePointer(ProcessHandle HANDLE, Ptr unsafe.Pointer, EncodedPtr *unsafe.Pointer) (r HRESULT) = api-ms-win-core-util-l1-1-1.EncodeRemotePointer
+//sys	DecodeRemotePointer(ProcessHandle HANDLE, Ptr unsafe.Pointer, DecodedPtr *unsafe.Pointer) (r HRESULT) = api-ms-win-core-util-l1-1-1.DecodeRemotePointer
+//sys	Beep(dwFreq uint32, dwDuration uint32) (r BOOL, err error)
+//sys	RaiseException(dwExceptionCode uint32, dwExceptionFlags uint32, nNumberOfArguments uint32, lpArguments *uintptr)
+//sys	UnhandledExceptionFilter(ExceptionInfo *EXCEPTION_POINTERS) (r int32)
+//sys	SetUnhandledExceptionFilter(lpTopLevelExceptionFilter LPTOP_LEVEL_EXCEPTION_FILTER) (r LPTOP_LEVEL_EXCEPTION_FILTER)
+//sys	GetErrorMode() (r uint32)
+//sys	SetErrorMode(uMode THREAD_ERROR_MODE) (r uint32)
+//sys	AddVectoredExceptionHandler(First uint32, Handler PVECTORED_EXCEPTION_HANDLER) (r unsafe.Pointer)
+//sys	RemoveVectoredExceptionHandler(Handle unsafe.Pointer) (r uint32)
+//sys	AddVectoredContinueHandler(First uint32, Handler PVECTORED_EXCEPTION_HANDLER) (r unsafe.Pointer)
+//sys	RemoveVectoredContinueHandler(Handle unsafe.Pointer) (r uint32)
+//sys	RaiseFailFastException(pExceptionRecord *EXCEPTION_RECORD, pContextRecord *CONTEXT, dwFlags uint32)
+//sys	FatalAppExitA(uAction uint32, lpMessageText *PSTRElement)
+//sys	FatalAppExitW(uAction uint32, lpMessageText *PWSTRElement)
+//sys	GetThreadErrorMode() (r uint32)
+//sys	SetThreadErrorMode(dwNewMode THREAD_ERROR_MODE, lpOldMode *THREAD_ERROR_MODE) (r BOOL, err error)
+//sys	TerminateProcessOnMemoryExhaustion(FailedAllocationSize uintptr) = api-ms-win-core-errorhandling-l1-1-3.TerminateProcessOnMemoryExhaustion
+//sys	OpenThreadWaitChainSession(Flags OPEN_THREAD_WAIT_CHAIN_SESSION_FLAGS, callback PWAITCHAINCALLBACK) (r unsafe.Pointer, err error) = advapi32.OpenThreadWaitChainSession
+//sys	CloseThreadWaitChainSession(WctHandle unsafe.Pointer) = advapi32.CloseThreadWaitChainSession
+//sys	GetThreadWaitChain(WctHandle unsafe.Pointer, Context uintptr, Flags WAIT_CHAIN_THREAD_OPTIONS, ThreadId uint32, NodeCount *uint32, NodeInfoArray *WAITCHAIN_NODE_INFO, IsCycle *int32) (r BOOL, err error) = advapi32.GetThreadWaitChain
+//sys	RegisterWaitChainCOMCallback(CallStateCallback PCOGETCALLSTATE, ActivationStateCallback PCOGETACTIVATIONSTATE) = advapi32.RegisterWaitChainCOMCallback
+//sys	MiniDumpWriteDump(hProcess HANDLE, ProcessId uint32, hFile HANDLE, DumpType MINIDUMP_TYPE, ExceptionParam *MINIDUMP_EXCEPTION_INFORMATION, UserStreamParam *MINIDUMP_USER_STREAM_INFORMATION, CallbackParam *MINIDUMP_CALLBACK_INFORMATION) (r BOOL, err error) = dbghelp.MiniDumpWriteDump
+//sys	MiniDumpReadDumpStream(BaseOfDump unsafe.Pointer, StreamNumber uint32, Dir **MINIDUMP_DIRECTORY, StreamPointer *unsafe.Pointer, StreamSize *uint32) (r BOOL) = dbghelp.MiniDumpReadDumpStream
+//sys	BindImage(ImageName *PSTRElement, DllPath *PSTRElement, SymbolPath *PSTRElement) (r BOOL, err error) = imagehlp.BindImage
+//sys	BindImageEx(Flags uint32, ImageName *PSTRElement, DllPath *PSTRElement, SymbolPath *PSTRElement, StatusRoutine PIMAGEHLP_STATUS_ROUTINE) (r BOOL, err error) = imagehlp.BindImageEx
+//sys	ReBaseImage(CurrentImageName *PSTRElement, SymbolPath *PSTRElement, fReBase BOOL, fRebaseSysfileOk BOOL, fGoingDown BOOL, CheckImageSize uint32, OldImageSize *uint32, OldImageBase *uintptr, NewImageSize *uint32, NewImageBase *uintptr, TimeStamp uint32) (r BOOL, err error) = imagehlp.ReBaseImage
+//sys	ReBaseImage64(CurrentImageName *PSTRElement, SymbolPath *PSTRElement, fReBase BOOL, fRebaseSysfileOk BOOL, fGoingDown BOOL, CheckImageSize uint32, OldImageSize *uint32, OldImageBase *uint64, NewImageSize *uint32, NewImageBase *uint64, TimeStamp uint32) (r BOOL, err error) = imagehlp.ReBaseImage64
+//sys	MapFileAndCheckSumA(Filename *PSTRElement, HeaderSum *uint32, CheckSum *uint32) (r uint32) = imagehlp.MapFileAndCheckSumA
+//sys	MapFileAndCheckSumW(Filename *PWSTRElement, HeaderSum *uint32, CheckSum *uint32) (r uint32) = imagehlp.MapFileAndCheckSumW
+//sys	GetImageUnusedHeaderBytes(LoadedImage *LOADED_IMAGE, SizeUnusedHeaderBytes *uint32) (r uint32, err error) = imagehlp.GetImageUnusedHeaderBytes
+//sys	ImageGetDigestStream(FileHandle HANDLE, DigestLevel uint32, DigestFunction DIGEST_FUNCTION, DigestHandle unsafe.Pointer) (r BOOL, err error) = imagehlp.ImageGetDigestStream
+//sys	ImageAddCertificate(FileHandle HANDLE, Certificate *WIN_CERTIFICATE, Index *uint32) (r BOOL, err error) = imagehlp.ImageAddCertificate
+//sys	ImageRemoveCertificate(FileHandle HANDLE, Index uint32) (r BOOL, err error) = imagehlp.ImageRemoveCertificate
+//sys	ImageEnumerateCertificates(FileHandle HANDLE, TypeFilter uint16, CertificateCount *uint32, Indices *uint32, IndexCount uint32) (r BOOL, err error) = imagehlp.ImageEnumerateCertificates
+//sys	ImageGetCertificateData(FileHandle HANDLE, CertificateIndex uint32, Certificate *WIN_CERTIFICATE, RequiredLength *uint32) (r BOOL, err error) = imagehlp.ImageGetCertificateData
+//sys	ImageGetCertificateHeader(FileHandle HANDLE, CertificateIndex uint32, Certificateheader *WIN_CERTIFICATE) (r BOOL, err error) = imagehlp.ImageGetCertificateHeader
+//sys	ImageLoad(DllName *PSTRElement, DllPath *PSTRElement) (r *LOADED_IMAGE, err error) = imagehlp.ImageLoad
+//sys	ImageUnload(LoadedImage *LOADED_IMAGE) (r BOOL, err error) = imagehlp.ImageUnload
+//sys	MapAndLoad(ImageName *PSTRElement, DllPath *PSTRElement, LoadedImage *LOADED_IMAGE, DotDll BOOL, ReadOnly BOOL) (r BOOL, err error) = imagehlp.MapAndLoad
+//sys	UnMapAndLoad(LoadedImage *LOADED_IMAGE) (r BOOL, err error) = imagehlp.UnMapAndLoad
+//sys	TouchFileTimes(FileHandle HANDLE, pSystemTime *SYSTEMTIME) (r BOOL, err error) = imagehlp.TouchFileTimes
+//sys	UpdateDebugInfoFile(ImageFileName *PSTRElement, SymbolPath *PSTRElement, DebugFilePath *PSTRElement, NtHeaders *IMAGE_NT_HEADERS32) (r BOOL, err error) = imagehlp.UpdateDebugInfoFile
+//sys	UpdateDebugInfoFileEx(ImageFileName *PSTRElement, SymbolPath *PSTRElement, DebugFilePath *PSTRElement, NtHeaders *IMAGE_NT_HEADERS32, OldCheckSum uint32) (r BOOL) = imagehlp.UpdateDebugInfoFileEx
+//sys	SymFindDebugInfoFile(hProcess HANDLE, FileName *PSTRElement, DebugFilePath *PSTRElement, Callback PFIND_DEBUG_FILE_CALLBACK, CallerData unsafe.Pointer) (r HANDLE, err error) = dbghelp.SymFindDebugInfoFile
+//sys	SymFindDebugInfoFileW(hProcess HANDLE, FileName *PWSTRElement, DebugFilePath *PWSTRElement, Callback PFIND_DEBUG_FILE_CALLBACKW, CallerData unsafe.Pointer) (r HANDLE, err error) = dbghelp.SymFindDebugInfoFileW
+//sys	FindDebugInfoFile(FileName *PSTRElement, SymbolPath *PSTRElement, DebugFilePath *PSTRElement) (r HANDLE, err error) = dbghelp.FindDebugInfoFile
+//sys	FindDebugInfoFileEx(FileName *PSTRElement, SymbolPath *PSTRElement, DebugFilePath *PSTRElement, Callback PFIND_DEBUG_FILE_CALLBACK, CallerData unsafe.Pointer) (r HANDLE, err error) = dbghelp.FindDebugInfoFileEx
+//sys	FindDebugInfoFileExW(FileName *PWSTRElement, SymbolPath *PWSTRElement, DebugFilePath *PWSTRElement, Callback PFIND_DEBUG_FILE_CALLBACKW, CallerData unsafe.Pointer) (r HANDLE, err error) = dbghelp.FindDebugInfoFileExW
+//sys	SymFindFileInPath(hprocess HANDLE, SearchPathA *PSTRElement, FileName *PSTRElement, id unsafe.Pointer, two uint32, three uint32, flags SYM_FIND_ID_OPTION, FoundFile *PSTRElement, callback PFINDFILEINPATHCALLBACK, context unsafe.Pointer) (r BOOL, err error) = dbghelp.SymFindFileInPath
+//sys	SymFindFileInPathW(hprocess HANDLE, SearchPathA *PWSTRElement, FileName *PWSTRElement, id unsafe.Pointer, two uint32, three uint32, flags SYM_FIND_ID_OPTION, FoundFile *PWSTRElement, callback PFINDFILEINPATHCALLBACKW, context unsafe.Pointer) (r BOOL, err error) = dbghelp.SymFindFileInPathW
+//sys	SymFindExecutableImage(hProcess HANDLE, FileName *PSTRElement, ImageFilePath *PSTRElement, Callback PFIND_EXE_FILE_CALLBACK, CallerData unsafe.Pointer) (r HANDLE, err error) = dbghelp.SymFindExecutableImage
+//sys	SymFindExecutableImageW(hProcess HANDLE, FileName *PWSTRElement, ImageFilePath *PWSTRElement, Callback PFIND_EXE_FILE_CALLBACKW, CallerData unsafe.Pointer) (r HANDLE, err error) = dbghelp.SymFindExecutableImageW
+//sys	FindExecutableImage(FileName *PSTRElement, SymbolPath *PSTRElement, ImageFilePath *PSTRElement) (r HANDLE, err error) = dbghelp.FindExecutableImage
+//sys	FindExecutableImageEx(FileName *PSTRElement, SymbolPath *PSTRElement, ImageFilePath *PSTRElement, Callback PFIND_EXE_FILE_CALLBACK, CallerData unsafe.Pointer) (r HANDLE, err error) = dbghelp.FindExecutableImageEx
+//sys	FindExecutableImageExW(FileName *PWSTRElement, SymbolPath *PWSTRElement, ImageFilePath *PWSTRElement, Callback PFIND_EXE_FILE_CALLBACKW, CallerData unsafe.Pointer) (r HANDLE, err error) = dbghelp.FindExecutableImageExW
+//sys	ImageDirectoryEntryToDataEx(Base unsafe.Pointer, MappedAsImage BOOLEAN, DirectoryEntry IMAGE_DIRECTORY_ENTRY, Size *uint32, FoundHeader **IMAGE_SECTION_HEADER) (r unsafe.Pointer, err error) = dbghelp.ImageDirectoryEntryToDataEx
+//sys	ImageDirectoryEntryToData(Base unsafe.Pointer, MappedAsImage BOOLEAN, DirectoryEntry IMAGE_DIRECTORY_ENTRY, Size *uint32) (r unsafe.Pointer, err error) = dbghelp.ImageDirectoryEntryToData
+//sys	SearchTreeForFile(RootPath *PSTRElement, InputPathName *PSTRElement, OutputPathBuffer *PSTRElement) (r BOOL, err error) = dbghelp.SearchTreeForFile
+//sys	SearchTreeForFileW(RootPath *PWSTRElement, InputPathName *PWSTRElement, OutputPathBuffer *PWSTRElement) (r BOOL, err error) = dbghelp.SearchTreeForFileW
+//sys	EnumDirTree(hProcess HANDLE, RootPath *PSTRElement, InputPathName *PSTRElement, OutputPathBuffer *PSTRElement, cb PENUMDIRTREE_CALLBACK, data unsafe.Pointer) (r BOOL, err error) = dbghelp.EnumDirTree
+//sys	EnumDirTreeW(hProcess HANDLE, RootPath *PWSTRElement, InputPathName *PWSTRElement, OutputPathBuffer *PWSTRElement, cb PENUMDIRTREE_CALLBACKW, data unsafe.Pointer) (r BOOL, err error) = dbghelp.EnumDirTreeW
+//sys	MakeSureDirectoryPathExists(DirPath *PSTRElement) (r BOOL, err error) = dbghelp.MakeSureDirectoryPathExists
+//sys	UnDecorateSymbolName(name *PSTRElement, outputString *PSTRElement, maxStringLength uint32, flags uint32) (r uint32, err error) = dbghelp.UnDecorateSymbolName
+//sys	UnDecorateSymbolNameW(name *PWSTRElement, outputString *PWSTRElement, maxStringLength uint32, flags uint32) (r uint32, err error) = dbghelp.UnDecorateSymbolNameW
+//sys	StackWalk64(MachineType uint32, hProcess HANDLE, hThread HANDLE, StackFrame *STACKFRAME64, ContextRecord unsafe.Pointer, ReadMemoryRoutine PREAD_PROCESS_MEMORY_ROUTINE64, FunctionTableAccessRoutine PFUNCTION_TABLE_ACCESS_ROUTINE64, GetModuleBaseRoutine PGET_MODULE_BASE_ROUTINE64, TranslateAddress PTRANSLATE_ADDRESS_ROUTINE64) (r BOOL) = dbghelp.StackWalk64
+//sys	StackWalkEx(MachineType uint32, hProcess HANDLE, hThread HANDLE, StackFrame *STACKFRAME_EX, ContextRecord unsafe.Pointer, ReadMemoryRoutine PREAD_PROCESS_MEMORY_ROUTINE64, FunctionTableAccessRoutine PFUNCTION_TABLE_ACCESS_ROUTINE64, GetModuleBaseRoutine PGET_MODULE_BASE_ROUTINE64, TranslateAddress PTRANSLATE_ADDRESS_ROUTINE64, Flags uint32) (r BOOL) = dbghelp.StackWalkEx
+//sys	ImagehlpApiVersion() (r *API_VERSION) = dbghelp.ImagehlpApiVersion
+//sys	ImagehlpApiVersionEx(AppVersion *API_VERSION) (r *API_VERSION) = dbghelp.ImagehlpApiVersionEx
+//sys	GetTimestampForLoadedLibrary(Module HINSTANCE) (r uint32, err error) = dbghelp.GetTimestampForLoadedLibrary
+//sys	SymSetParentWindow(hwnd HWND) (r BOOL, err error) = dbghelp.SymSetParentWindow
+//sys	SymSetHomeDirectory(hProcess HANDLE, dir *PSTRElement) (r *PSTRElement, err error) = dbghelp.SymSetHomeDirectory
+//sys	SymSetHomeDirectoryW(hProcess HANDLE, dir *PWSTRElement) (r *PWSTRElement, err error) = dbghelp.SymSetHomeDirectoryW
+//sys	SymGetHomeDirectory(typeParam IMAGEHLP_HD_TYPE, dir *PSTRElement, size uintptr) (r *PSTRElement, err error) = dbghelp.SymGetHomeDirectory
+//sys	SymGetHomeDirectoryW(typeParam IMAGEHLP_HD_TYPE, dir *PWSTRElement, size uintptr) (r *PWSTRElement, err error) = dbghelp.SymGetHomeDirectoryW
+//sys	SymGetOmaps(hProcess HANDLE, BaseOfDll uint64, OmapTo **OMAP, cOmapTo *uint64, OmapFrom **OMAP, cOmapFrom *uint64) (r BOOL, err error) = dbghelp.SymGetOmaps
+//sys	SymSetOptions(SymOptions uint32) (r uint32) = dbghelp.SymSetOptions
+//sys	SymGetOptions() (r uint32) = dbghelp.SymGetOptions
+//sys	SymCleanup(hProcess HANDLE) (r BOOL, err error) = dbghelp.SymCleanup
+//sys	SymGetExtendedOption(option IMAGEHLP_EXTENDED_OPTIONS) (r BOOL) = dbghelp.SymGetExtendedOption
+//sys	SymSetExtendedOption(option IMAGEHLP_EXTENDED_OPTIONS, value BOOL) (r BOOL) = dbghelp.SymSetExtendedOption
+//sys	SymMatchString(string *PSTRElement, expression *PSTRElement, fCase BOOL) (r BOOL, err error) = dbghelp.SymMatchString
+//sys	SymMatchStringA(string *PSTRElement, expression *PSTRElement, fCase BOOL) (r BOOL) = dbghelp.SymMatchStringA
+//sys	SymMatchStringW(string *PWSTRElement, expression *PWSTRElement, fCase BOOL) (r BOOL, err error) = dbghelp.SymMatchStringW
+//sys	SymEnumSourceFiles(hProcess HANDLE, ModBase uint64, Mask *PSTRElement, cbSrcFiles PSYM_ENUMSOURCEFILES_CALLBACK, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumSourceFiles
+//sys	SymEnumSourceFilesW(hProcess HANDLE, ModBase uint64, Mask *PWSTRElement, cbSrcFiles PSYM_ENUMSOURCEFILES_CALLBACKW, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumSourceFilesW
+//sys	SymEnumerateModules64(hProcess HANDLE, EnumModulesCallback PSYM_ENUMMODULES_CALLBACK64, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumerateModules64
+//sys	SymEnumerateModulesW64(hProcess HANDLE, EnumModulesCallback PSYM_ENUMMODULES_CALLBACKW64, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumerateModulesW64
+//sys	EnumerateLoadedModulesEx(hProcess HANDLE, EnumLoadedModulesCallback PENUMLOADED_MODULES_CALLBACK64, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.EnumerateLoadedModulesEx
+//sys	EnumerateLoadedModulesExW(hProcess HANDLE, EnumLoadedModulesCallback PENUMLOADED_MODULES_CALLBACKW64, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.EnumerateLoadedModulesExW
+//sys	EnumerateLoadedModules64(hProcess HANDLE, EnumLoadedModulesCallback PENUMLOADED_MODULES_CALLBACK64, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.EnumerateLoadedModules64
+//sys	EnumerateLoadedModulesW64(hProcess HANDLE, EnumLoadedModulesCallback PENUMLOADED_MODULES_CALLBACKW64, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.EnumerateLoadedModulesW64
+//sys	SymFunctionTableAccess64(hProcess HANDLE, AddrBase uint64) (r unsafe.Pointer, err error) = dbghelp.SymFunctionTableAccess64
+//sys	SymFunctionTableAccess64AccessRoutines(hProcess HANDLE, AddrBase uint64, ReadMemoryRoutine PREAD_PROCESS_MEMORY_ROUTINE64, GetModuleBaseRoutine PGET_MODULE_BASE_ROUTINE64) (r unsafe.Pointer) = dbghelp.SymFunctionTableAccess64AccessRoutines
+//sys	SymGetUnwindInfo(hProcess HANDLE, Address uint64, Buffer unsafe.Pointer, Size *uint32) (r BOOL) = dbghelp.SymGetUnwindInfo
+//sys	SymGetModuleInfo64(hProcess HANDLE, qwAddr uint64, ModuleInfo *IMAGEHLP_MODULE64) (r BOOL, err error) = dbghelp.SymGetModuleInfo64
+//sys	SymGetModuleInfoW64(hProcess HANDLE, qwAddr uint64, ModuleInfo *IMAGEHLP_MODULEW64) (r BOOL, err error) = dbghelp.SymGetModuleInfoW64
+//sys	SymGetModuleBase64(hProcess HANDLE, qwAddr uint64) (r uint64, err error) = dbghelp.SymGetModuleBase64
+//sys	SymEnumLines(hProcess HANDLE, Base uint64, Obj *PSTRElement, File *PSTRElement, EnumLinesCallback PSYM_ENUMLINES_CALLBACK, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumLines
+//sys	SymEnumLinesW(hProcess HANDLE, Base uint64, Obj *PWSTRElement, File *PWSTRElement, EnumLinesCallback PSYM_ENUMLINES_CALLBACKW, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumLinesW
+//sys	SymGetLineFromAddr64(hProcess HANDLE, qwAddr uint64, pdwDisplacement *uint32, Line64 *IMAGEHLP_LINE64) (r BOOL, err error) = dbghelp.SymGetLineFromAddr64
+//sys	SymGetLineFromAddrW64(hProcess HANDLE, dwAddr uint64, pdwDisplacement *uint32, Line *IMAGEHLP_LINEW64) (r BOOL, err error) = dbghelp.SymGetLineFromAddrW64
+//sys	SymGetLineFromInlineContext(hProcess HANDLE, qwAddr uint64, InlineContext uint32, qwModuleBaseAddress uint64, pdwDisplacement *uint32, Line64 *IMAGEHLP_LINE64) (r BOOL, err error) = dbghelp.SymGetLineFromInlineContext
+//sys	SymGetLineFromInlineContextW(hProcess HANDLE, dwAddr uint64, InlineContext uint32, qwModuleBaseAddress uint64, pdwDisplacement *uint32, Line *IMAGEHLP_LINEW64) (r BOOL, err error) = dbghelp.SymGetLineFromInlineContextW
+//sys	SymEnumSourceLines(hProcess HANDLE, Base uint64, Obj *PSTRElement, File *PSTRElement, Line uint32, Flags uint32, EnumLinesCallback PSYM_ENUMLINES_CALLBACK, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumSourceLines
+//sys	SymEnumSourceLinesW(hProcess HANDLE, Base uint64, Obj *PWSTRElement, File *PWSTRElement, Line uint32, Flags uint32, EnumLinesCallback PSYM_ENUMLINES_CALLBACKW, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumSourceLinesW
+//sys	SymAddrIncludeInlineTrace(hProcess HANDLE, Address uint64) (r uint32) = dbghelp.SymAddrIncludeInlineTrace
+//sys	SymCompareInlineTrace(hProcess HANDLE, Address1 uint64, InlineContext1 uint32, RetAddress1 uint64, Address2 uint64, RetAddress2 uint64) (r uint32) = dbghelp.SymCompareInlineTrace
+//sys	SymQueryInlineTrace(hProcess HANDLE, StartAddress uint64, StartContext uint32, StartRetAddress uint64, CurAddress uint64, CurContext *uint32, CurFrameIndex *uint32) (r BOOL, err error) = dbghelp.SymQueryInlineTrace
+//sys	SymGetLineFromName64(hProcess HANDLE, ModuleName *PSTRElement, FileName *PSTRElement, dwLineNumber uint32, plDisplacement *int32, Line *IMAGEHLP_LINE64) (r BOOL, err error) = dbghelp.SymGetLineFromName64
+//sys	SymGetLineFromNameW64(hProcess HANDLE, ModuleName *PWSTRElement, FileName *PWSTRElement, dwLineNumber uint32, plDisplacement *int32, Line *IMAGEHLP_LINEW64) (r BOOL, err error) = dbghelp.SymGetLineFromNameW64
+//sys	SymGetLineNext64(hProcess HANDLE, Line *IMAGEHLP_LINE64) (r BOOL, err error) = dbghelp.SymGetLineNext64
+//sys	SymGetLineNextW64(hProcess HANDLE, Line *IMAGEHLP_LINEW64) (r BOOL, err error) = dbghelp.SymGetLineNextW64
+//sys	SymGetLinePrev64(hProcess HANDLE, Line *IMAGEHLP_LINE64) (r BOOL, err error) = dbghelp.SymGetLinePrev64
+//sys	SymGetLinePrevW64(hProcess HANDLE, Line *IMAGEHLP_LINEW64) (r BOOL, err error) = dbghelp.SymGetLinePrevW64
+//sys	SymGetFileLineOffsets64(hProcess HANDLE, ModuleName *PSTRElement, FileName *PSTRElement, Buffer *uint64, BufferLines uint32) (r uint32, err error) = dbghelp.SymGetFileLineOffsets64
+//sys	SymMatchFileName(FileName *PSTRElement, Match *PSTRElement, FileNameStop **PSTRElement, MatchStop **PSTRElement) (r BOOL, err error) = dbghelp.SymMatchFileName
+//sys	SymMatchFileNameW(FileName *PWSTRElement, Match *PWSTRElement, FileNameStop **PWSTRElement, MatchStop **PWSTRElement) (r BOOL, err error) = dbghelp.SymMatchFileNameW
+//sys	SymGetSourceFile(hProcess HANDLE, Base uint64, Params *PSTRElement, FileSpec *PSTRElement, FilePath *PSTRElement, Size uint32) (r BOOL, err error) = dbghelp.SymGetSourceFile
+//sys	SymGetSourceFileW(hProcess HANDLE, Base uint64, Params *PWSTRElement, FileSpec *PWSTRElement, FilePath *PWSTRElement, Size uint32) (r BOOL, err error) = dbghelp.SymGetSourceFileW
+//sys	SymGetSourceFileToken(hProcess HANDLE, Base uint64, FileSpec *PSTRElement, Token *unsafe.Pointer, Size *uint32) (r BOOL, err error) = dbghelp.SymGetSourceFileToken
+//sys	SymGetSourceFileTokenByTokenName(hProcess HANDLE, Base uint64, FileSpec *PSTRElement, TokenName *PSTRElement, TokenParameters *PSTRElement, Token *unsafe.Pointer, Size *uint32) (r BOOL) = dbghelp.SymGetSourceFileTokenByTokenName
+//sys	SymGetSourceFileChecksumW(hProcess HANDLE, Base uint64, FileSpec *PWSTRElement, pCheckSumType *uint32, pChecksum *uint8, checksumSize uint32, pActualBytesWritten *uint32) (r BOOL, err error) = dbghelp.SymGetSourceFileChecksumW
+//sys	SymGetSourceFileChecksum(hProcess HANDLE, Base uint64, FileSpec *PSTRElement, pCheckSumType *uint32, pChecksum *uint8, checksumSize uint32, pActualBytesWritten *uint32) (r BOOL, err error) = dbghelp.SymGetSourceFileChecksum
+//sys	SymGetSourceFileTokenW(hProcess HANDLE, Base uint64, FileSpec *PWSTRElement, Token *unsafe.Pointer, Size *uint32) (r BOOL, err error) = dbghelp.SymGetSourceFileTokenW
+//sys	SymGetSourceFileTokenByTokenNameW(hProcess HANDLE, Base uint64, FileSpec *PWSTRElement, TokenName *PWSTRElement, TokenParameters *PWSTRElement, Token *unsafe.Pointer, Size *uint32) (r BOOL) = dbghelp.SymGetSourceFileTokenByTokenNameW
+//sys	SymGetSourceFileFromToken(hProcess HANDLE, Token unsafe.Pointer, Params *PSTRElement, FilePath *PSTRElement, Size uint32) (r BOOL, err error) = dbghelp.SymGetSourceFileFromToken
+//sys	SymGetSourceFileFromTokenByTokenName(hProcess HANDLE, Token unsafe.Pointer, TokenName *PSTRElement, Params *PSTRElement, FilePath *PSTRElement, Size uint32) (r BOOL) = dbghelp.SymGetSourceFileFromTokenByTokenName
+//sys	SymGetSourceFileFromTokenW(hProcess HANDLE, Token unsafe.Pointer, Params *PWSTRElement, FilePath *PWSTRElement, Size uint32) (r BOOL, err error) = dbghelp.SymGetSourceFileFromTokenW
+//sys	SymGetSourceFileFromTokenByTokenNameW(hProcess HANDLE, Token unsafe.Pointer, TokenName *PWSTRElement, Params *PWSTRElement, FilePath *PWSTRElement, Size uint32) (r BOOL) = dbghelp.SymGetSourceFileFromTokenByTokenNameW
+//sys	SymGetSourceVarFromToken(hProcess HANDLE, Token unsafe.Pointer, Params *PSTRElement, VarName *PSTRElement, Value *PSTRElement, Size uint32) (r BOOL, err error) = dbghelp.SymGetSourceVarFromToken
+//sys	SymGetSourceVarFromTokenW(hProcess HANDLE, Token unsafe.Pointer, Params *PWSTRElement, VarName *PWSTRElement, Value *PWSTRElement, Size uint32) (r BOOL, err error) = dbghelp.SymGetSourceVarFromTokenW
+//sys	SymEnumSourceFileTokens(hProcess HANDLE, Base uint64, Callback PENUMSOURCEFILETOKENSCALLBACK) (r BOOL, err error) = dbghelp.SymEnumSourceFileTokens
+//sys	SymInitialize(hProcess HANDLE, UserSearchPath *PSTRElement, fInvadeProcess BOOL) (r BOOL, err error) = dbghelp.SymInitialize
+//sys	SymInitializeW(hProcess HANDLE, UserSearchPath *PWSTRElement, fInvadeProcess BOOL) (r BOOL, err error) = dbghelp.SymInitializeW
+//sys	SymGetSearchPath(hProcess HANDLE, SearchPathA *PSTRElement, SearchPathLength uint32) (r BOOL, err error) = dbghelp.SymGetSearchPath
+//sys	SymGetSearchPathW(hProcess HANDLE, SearchPathA *PWSTRElement, SearchPathLength uint32) (r BOOL, err error) = dbghelp.SymGetSearchPathW
+//sys	SymSetSearchPath(hProcess HANDLE, SearchPathA *PSTRElement) (r BOOL, err error) = dbghelp.SymSetSearchPath
+//sys	SymSetSearchPathW(hProcess HANDLE, SearchPathA *PWSTRElement) (r BOOL, err error) = dbghelp.SymSetSearchPathW
+//sys	SymLoadModuleEx(hProcess HANDLE, hFile HANDLE, ImageName *PSTRElement, ModuleName *PSTRElement, BaseOfDll uint64, DllSize uint32, Data *MODLOAD_DATA, Flags SYM_LOAD_FLAGS) (r uint64, err error) = dbghelp.SymLoadModuleEx
+//sys	SymLoadModuleExW(hProcess HANDLE, hFile HANDLE, ImageName *PWSTRElement, ModuleName *PWSTRElement, BaseOfDll uint64, DllSize uint32, Data *MODLOAD_DATA, Flags SYM_LOAD_FLAGS) (r uint64, err error) = dbghelp.SymLoadModuleExW
+//sys	SymUnloadModule64(hProcess HANDLE, BaseOfDll uint64) (r BOOL, err error) = dbghelp.SymUnloadModule64
+//sys	SymUnDName64(sym *IMAGEHLP_SYMBOL64, UnDecName *PSTRElement, UnDecNameLength uint32) (r BOOL, err error) = dbghelp.SymUnDName64
+//sys	SymRegisterCallback64(hProcess HANDLE, CallbackFunction PSYMBOL_REGISTERED_CALLBACK64, UserContext uint64) (r BOOL, err error) = dbghelp.SymRegisterCallback64
+//sys	SymRegisterCallbackW64(hProcess HANDLE, CallbackFunction PSYMBOL_REGISTERED_CALLBACK64, UserContext uint64) (r BOOL, err error) = dbghelp.SymRegisterCallbackW64
+//sys	SymRegisterFunctionEntryCallback64(hProcess HANDLE, CallbackFunction PSYMBOL_FUNCENTRY_CALLBACK64, UserContext uint64) (r BOOL, err error) = dbghelp.SymRegisterFunctionEntryCallback64
+//sys	SymSetContext(hProcess HANDLE, StackFrame *IMAGEHLP_STACK_FRAME, Context unsafe.Pointer) (r BOOL, err error) = dbghelp.SymSetContext
+//sys	SymSetScopeFromAddr(hProcess HANDLE, Address uint64) (r BOOL, err error) = dbghelp.SymSetScopeFromAddr
+//sys	SymSetScopeFromInlineContext(hProcess HANDLE, Address uint64, InlineContext uint32) (r BOOL, err error) = dbghelp.SymSetScopeFromInlineContext
+//sys	SymSetScopeFromIndex(hProcess HANDLE, BaseOfDll uint64, Index uint32) (r BOOL, err error) = dbghelp.SymSetScopeFromIndex
+//sys	SymEnumProcesses(EnumProcessesCallback PSYM_ENUMPROCESSES_CALLBACK, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumProcesses
+//sys	SymFromAddr(hProcess HANDLE, Address uint64, Displacement *uint64, Symbol *SYMBOL_INFO) (r BOOL, err error) = dbghelp.SymFromAddr
+//sys	SymFromAddrW(hProcess HANDLE, Address uint64, Displacement *uint64, Symbol *SYMBOL_INFOW) (r BOOL, err error) = dbghelp.SymFromAddrW
+//sys	SymFromInlineContext(hProcess HANDLE, Address uint64, InlineContext uint32, Displacement *uint64, Symbol *SYMBOL_INFO) (r BOOL, err error) = dbghelp.SymFromInlineContext
+//sys	SymFromInlineContextW(hProcess HANDLE, Address uint64, InlineContext uint32, Displacement *uint64, Symbol *SYMBOL_INFOW) (r BOOL, err error) = dbghelp.SymFromInlineContextW
+//sys	SymFromToken(hProcess HANDLE, Base uint64, Token uint32, Symbol *SYMBOL_INFO) (r BOOL, err error) = dbghelp.SymFromToken
+//sys	SymFromTokenW(hProcess HANDLE, Base uint64, Token uint32, Symbol *SYMBOL_INFOW) (r BOOL, err error) = dbghelp.SymFromTokenW
+//sys	SymNext(hProcess HANDLE, si *SYMBOL_INFO) (r BOOL, err error) = dbghelp.SymNext
+//sys	SymNextW(hProcess HANDLE, siw *SYMBOL_INFOW) (r BOOL, err error) = dbghelp.SymNextW
+//sys	SymPrev(hProcess HANDLE, si *SYMBOL_INFO) (r BOOL, err error) = dbghelp.SymPrev
+//sys	SymPrevW(hProcess HANDLE, siw *SYMBOL_INFOW) (r BOOL, err error) = dbghelp.SymPrevW
+//sys	SymFromName(hProcess HANDLE, Name *PSTRElement, Symbol *SYMBOL_INFO) (r BOOL, err error) = dbghelp.SymFromName
+//sys	SymFromNameW(hProcess HANDLE, Name *PWSTRElement, Symbol *SYMBOL_INFOW) (r BOOL, err error) = dbghelp.SymFromNameW
+//sys	SymEnumSymbols(hProcess HANDLE, BaseOfDll uint64, Mask *PSTRElement, EnumSymbolsCallback PSYM_ENUMERATESYMBOLS_CALLBACK, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumSymbols
+//sys	SymEnumSymbolsEx(hProcess HANDLE, BaseOfDll uint64, Mask *PSTRElement, EnumSymbolsCallback PSYM_ENUMERATESYMBOLS_CALLBACK, UserContext unsafe.Pointer, Options uint32) (r BOOL, err error) = dbghelp.SymEnumSymbolsEx
+//sys	SymEnumSymbolsW(hProcess HANDLE, BaseOfDll uint64, Mask *PWSTRElement, EnumSymbolsCallback PSYM_ENUMERATESYMBOLS_CALLBACKW, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumSymbolsW
+//sys	SymEnumSymbolsExW(hProcess HANDLE, BaseOfDll uint64, Mask *PWSTRElement, EnumSymbolsCallback PSYM_ENUMERATESYMBOLS_CALLBACKW, UserContext unsafe.Pointer, Options uint32) (r BOOL, err error) = dbghelp.SymEnumSymbolsExW
+//sys	SymEnumSymbolsForAddr(hProcess HANDLE, Address uint64, EnumSymbolsCallback PSYM_ENUMERATESYMBOLS_CALLBACK, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumSymbolsForAddr
+//sys	SymEnumSymbolsForAddrW(hProcess HANDLE, Address uint64, EnumSymbolsCallback PSYM_ENUMERATESYMBOLS_CALLBACKW, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumSymbolsForAddrW
+//sys	SymSearch(hProcess HANDLE, BaseOfDll uint64, Index uint32, SymTag uint32, Mask *PSTRElement, Address uint64, EnumSymbolsCallback PSYM_ENUMERATESYMBOLS_CALLBACK, UserContext unsafe.Pointer, Options uint32) (r BOOL, err error) = dbghelp.SymSearch
+//sys	SymSearchW(hProcess HANDLE, BaseOfDll uint64, Index uint32, SymTag uint32, Mask *PWSTRElement, Address uint64, EnumSymbolsCallback PSYM_ENUMERATESYMBOLS_CALLBACKW, UserContext unsafe.Pointer, Options uint32) (r BOOL, err error) = dbghelp.SymSearchW
+//sys	SymGetScope(hProcess HANDLE, BaseOfDll uint64, Index uint32, Symbol *SYMBOL_INFO) (r BOOL, err error) = dbghelp.SymGetScope
+//sys	SymGetScopeW(hProcess HANDLE, BaseOfDll uint64, Index uint32, Symbol *SYMBOL_INFOW) (r BOOL, err error) = dbghelp.SymGetScopeW
+//sys	SymFromIndex(hProcess HANDLE, BaseOfDll uint64, Index uint32, Symbol *SYMBOL_INFO) (r BOOL, err error) = dbghelp.SymFromIndex
+//sys	SymFromIndexW(hProcess HANDLE, BaseOfDll uint64, Index uint32, Symbol *SYMBOL_INFOW) (r BOOL, err error) = dbghelp.SymFromIndexW
+//sys	SymGetTypeInfo(hProcess HANDLE, ModBase uint64, TypeId uint32, GetType IMAGEHLP_SYMBOL_TYPE_INFO, pInfo unsafe.Pointer) (r BOOL, err error) = dbghelp.SymGetTypeInfo
+//sys	SymGetTypeInfoEx(hProcess HANDLE, ModBase uint64, Params *IMAGEHLP_GET_TYPE_INFO_PARAMS) (r BOOL, err error) = dbghelp.SymGetTypeInfoEx
+//sys	SymEnumTypes(hProcess HANDLE, BaseOfDll uint64, EnumSymbolsCallback PSYM_ENUMERATESYMBOLS_CALLBACK, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumTypes
+//sys	SymEnumTypesW(hProcess HANDLE, BaseOfDll uint64, EnumSymbolsCallback PSYM_ENUMERATESYMBOLS_CALLBACKW, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumTypesW
+//sys	SymEnumTypesByName(hProcess HANDLE, BaseOfDll uint64, mask *PSTRElement, EnumSymbolsCallback PSYM_ENUMERATESYMBOLS_CALLBACK, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumTypesByName
+//sys	SymEnumTypesByNameW(hProcess HANDLE, BaseOfDll uint64, mask *PWSTRElement, EnumSymbolsCallback PSYM_ENUMERATESYMBOLS_CALLBACKW, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumTypesByNameW
+//sys	SymGetTypeFromName(hProcess HANDLE, BaseOfDll uint64, Name *PSTRElement, Symbol *SYMBOL_INFO) (r BOOL, err error) = dbghelp.SymGetTypeFromName
+//sys	SymGetTypeFromNameW(hProcess HANDLE, BaseOfDll uint64, Name *PWSTRElement, Symbol *SYMBOL_INFOW) (r BOOL, err error) = dbghelp.SymGetTypeFromNameW
+//sys	SymAddSymbol(hProcess HANDLE, BaseOfDll uint64, Name *PSTRElement, Address uint64, Size uint32, Flags uint32) (r BOOL, err error) = dbghelp.SymAddSymbol
+//sys	SymAddSymbolW(hProcess HANDLE, BaseOfDll uint64, Name *PWSTRElement, Address uint64, Size uint32, Flags uint32) (r BOOL, err error) = dbghelp.SymAddSymbolW
+//sys	SymDeleteSymbol(hProcess HANDLE, BaseOfDll uint64, Name *PSTRElement, Address uint64, Flags uint32) (r BOOL, err error) = dbghelp.SymDeleteSymbol
+//sys	SymDeleteSymbolW(hProcess HANDLE, BaseOfDll uint64, Name *PWSTRElement, Address uint64, Flags uint32) (r BOOL, err error) = dbghelp.SymDeleteSymbolW
+//sys	SymRefreshModuleList(hProcess HANDLE) (r BOOL, err error) = dbghelp.SymRefreshModuleList
+//sys	SymAddSourceStream(hProcess HANDLE, Base uint64, StreamFile *PSTRElement, Buffer *uint8, Size uintptr) (r BOOL, err error) = dbghelp.SymAddSourceStream
+//sys	SymAddSourceStreamA(hProcess HANDLE, Base uint64, StreamFile *PSTRElement, Buffer *uint8, Size uintptr) (r BOOL) = dbghelp.SymAddSourceStreamA
+//sys	SymAddSourceStreamW(hProcess HANDLE, Base uint64, FileSpec *PWSTRElement, Buffer *uint8, Size uintptr) (r BOOL, err error) = dbghelp.SymAddSourceStreamW
+//sys	SymSrvIsStoreW(hProcess HANDLE, path *PWSTRElement) (r BOOL, err error) = dbghelp.SymSrvIsStoreW
+//sys	SymSrvIsStore(hProcess HANDLE, path *PSTRElement) (r BOOL, err error) = dbghelp.SymSrvIsStore
+//sys	SymSrvDeltaName(hProcess HANDLE, SymPath *PSTRElement, Type *PSTRElement, File1 *PSTRElement, File2 *PSTRElement) (r *PSTRElement, err error) = dbghelp.SymSrvDeltaName
+//sys	SymSrvDeltaNameW(hProcess HANDLE, SymPath *PWSTRElement, Type *PWSTRElement, File1 *PWSTRElement, File2 *PWSTRElement) (r *PWSTRElement, err error) = dbghelp.SymSrvDeltaNameW
+//sys	SymSrvGetSupplement(hProcess HANDLE, SymPath *PSTRElement, Node *PSTRElement, File *PSTRElement) (r *PSTRElement, err error) = dbghelp.SymSrvGetSupplement
+//sys	SymSrvGetSupplementW(hProcess HANDLE, SymPath *PWSTRElement, Node *PWSTRElement, File *PWSTRElement) (r *PWSTRElement, err error) = dbghelp.SymSrvGetSupplementW
+//sys	SymSrvGetFileIndexes(File *PSTRElement, Id *Guid, Val1 *uint32, Val2 *uint32, Flags uint32) (r BOOL, err error) = dbghelp.SymSrvGetFileIndexes
+//sys	SymSrvGetFileIndexesW(File *PWSTRElement, Id *Guid, Val1 *uint32, Val2 *uint32, Flags uint32) (r BOOL, err error) = dbghelp.SymSrvGetFileIndexesW
+//sys	SymSrvGetFileIndexStringW(hProcess HANDLE, SrvPath *PWSTRElement, File *PWSTRElement, Index *PWSTRElement, Size uintptr, Flags uint32) (r BOOL, err error) = dbghelp.SymSrvGetFileIndexStringW
+//sys	SymSrvGetFileIndexString(hProcess HANDLE, SrvPath *PSTRElement, File *PSTRElement, Index *PSTRElement, Size uintptr, Flags uint32) (r BOOL, err error) = dbghelp.SymSrvGetFileIndexString
+//sys	SymSrvGetFileIndexInfo(File *PSTRElement, Info *SYMSRV_INDEX_INFO, Flags uint32) (r BOOL, err error) = dbghelp.SymSrvGetFileIndexInfo
+//sys	SymSrvGetFileIndexInfoW(File *PWSTRElement, Info *SYMSRV_INDEX_INFOW, Flags uint32) (r BOOL, err error) = dbghelp.SymSrvGetFileIndexInfoW
+//sys	SymSrvStoreSupplement(hProcess HANDLE, SrvPath *PSTRElement, Node *PSTRElement, File *PSTRElement, Flags uint32) (r *PSTRElement, err error) = dbghelp.SymSrvStoreSupplement
+//sys	SymSrvStoreSupplementW(hProcess HANDLE, SymPath *PWSTRElement, Node *PWSTRElement, File *PWSTRElement, Flags uint32) (r *PWSTRElement, err error) = dbghelp.SymSrvStoreSupplementW
+//sys	SymSrvStoreFile(hProcess HANDLE, SrvPath *PSTRElement, File *PSTRElement, Flags SYM_SRV_STORE_FILE_FLAGS) (r *PSTRElement, err error) = dbghelp.SymSrvStoreFile
+//sys	SymSrvStoreFileW(hProcess HANDLE, SrvPath *PWSTRElement, File *PWSTRElement, Flags SYM_SRV_STORE_FILE_FLAGS) (r *PWSTRElement, err error) = dbghelp.SymSrvStoreFileW
+//sys	SymGetSymbolFile(hProcess HANDLE, SymPath *PSTRElement, ImageFile *PSTRElement, Type IMAGEHLP_SF_TYPE, SymbolFile *PSTRElement, cSymbolFile uintptr, DbgFile *PSTRElement, cDbgFile uintptr) (r BOOL, err error) = dbghelp.SymGetSymbolFile
+//sys	SymGetSymbolFileW(hProcess HANDLE, SymPath *PWSTRElement, ImageFile *PWSTRElement, Type IMAGEHLP_SF_TYPE, SymbolFile *PWSTRElement, cSymbolFile uintptr, DbgFile *PWSTRElement, cDbgFile uintptr) (r BOOL, err error) = dbghelp.SymGetSymbolFileW
+//sys	DbgHelpCreateUserDump(FileName *PSTRElement, Callback PDBGHELP_CREATE_USER_DUMP_CALLBACK, UserData unsafe.Pointer) (r BOOL) = dbghelp.DbgHelpCreateUserDump
+//sys	DbgHelpCreateUserDumpW(FileName *PWSTRElement, Callback PDBGHELP_CREATE_USER_DUMP_CALLBACK, UserData unsafe.Pointer) (r BOOL) = dbghelp.DbgHelpCreateUserDumpW
+//sys	SymGetSymFromAddr64(hProcess HANDLE, qwAddr uint64, pdwDisplacement *uint64, Symbol *IMAGEHLP_SYMBOL64) (r BOOL, err error) = dbghelp.SymGetSymFromAddr64
+//sys	SymGetSymFromName64(hProcess HANDLE, Name *PSTRElement, Symbol *IMAGEHLP_SYMBOL64) (r BOOL, err error) = dbghelp.SymGetSymFromName64
+//sys	FindFileInPath(hprocess HANDLE, SearchPathA *PSTRElement, FileName *PSTRElement, id unsafe.Pointer, two uint32, three uint32, flags uint32, FilePath *PSTRElement) (r BOOL) = dbghelp.FindFileInPath
+//sys	FindFileInSearchPath(hprocess HANDLE, SearchPathA *PSTRElement, FileName *PSTRElement, one uint32, two uint32, three uint32, FilePath *PSTRElement) (r BOOL) = dbghelp.FindFileInSearchPath
+//sys	SymEnumSym(hProcess HANDLE, BaseOfDll uint64, EnumSymbolsCallback PSYM_ENUMERATESYMBOLS_CALLBACK, UserContext unsafe.Pointer) (r BOOL) = dbghelp.SymEnumSym
+//sys	SymEnumerateSymbols64(hProcess HANDLE, BaseOfDll uint64, EnumSymbolsCallback PSYM_ENUMSYMBOLS_CALLBACK64, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumerateSymbols64
+//sys	SymEnumerateSymbolsW64(hProcess HANDLE, BaseOfDll uint64, EnumSymbolsCallback PSYM_ENUMSYMBOLS_CALLBACK64W, UserContext unsafe.Pointer) (r BOOL, err error) = dbghelp.SymEnumerateSymbolsW64
+//sys	SymLoadModule64(hProcess HANDLE, hFile HANDLE, ImageName *PSTRElement, ModuleName *PSTRElement, BaseOfDll uint64, SizeOfDll uint32) (r uint64, err error) = dbghelp.SymLoadModule64
+//sys	SymGetSymNext64(hProcess HANDLE, Symbol *IMAGEHLP_SYMBOL64) (r BOOL, err error) = dbghelp.SymGetSymNext64
+//sys	SymGetSymPrev64(hProcess HANDLE, Symbol *IMAGEHLP_SYMBOL64) (r BOOL, err error) = dbghelp.SymGetSymPrev64
+//sys	SetCheckUserInterruptShared(lpStartAddress LPCALL_BACK_USER_INTERRUPT_ROUTINE) = dbghelp.SetCheckUserInterruptShared
+//sys	GetSymLoadError() (r uint32) = dbghelp.GetSymLoadError
+//sys	SetSymLoadError(error uint32) = dbghelp.SetSymLoadError
+//sys	ReportSymbolLoadSummary(hProcess HANDLE, pLoadModule *PWSTRElement, pSymbolData *DBGHELP_DATA_REPORT_STRUCT) (r BOOL) = dbghelp.ReportSymbolLoadSummary
+//sys	RemoveInvalidModuleList(hProcess HANDLE) = dbghelp.RemoveInvalidModuleList
+//sys	RangeMapCreate() (r unsafe.Pointer) = dbghelp.RangeMapCreate
+//sys	RangeMapFree(RmapHandle unsafe.Pointer) = dbghelp.RangeMapFree
+//sys	RangeMapAddPeImageSections(RmapHandle unsafe.Pointer, ImageName *PWSTRElement, MappedImage unsafe.Pointer, MappingBytes uint32, ImageBase uint64, UserTag uint64, MappingFlags uint32) (r BOOL) = dbghelp.RangeMapAddPeImageSections
+//sys	RangeMapRemove(RmapHandle unsafe.Pointer, UserTag uint64) (r BOOL) = dbghelp.RangeMapRemove
+//sys	RangeMapRead(RmapHandle unsafe.Pointer, Offset uint64, Buffer unsafe.Pointer, RequestBytes uint32, Flags uint32, DoneBytes *uint32) (r BOOL) = dbghelp.RangeMapRead
+//sys	RangeMapWrite(RmapHandle unsafe.Pointer, Offset uint64, Buffer unsafe.Pointer, RequestBytes uint32, Flags uint32, DoneBytes *uint32) (r BOOL) = dbghelp.RangeMapWrite
+//sys	MessageBeep(uType uint32) (r BOOL, err error) = user32.MessageBeep
+//sys	FatalExit(ExitCode int32)
+//sys	GetThreadSelectorEntry(hThread HANDLE, dwSelector uint32, lpSelectorEntry *LDT_ENTRY) (r BOOL, err error)
+//sys	Wow64GetThreadSelectorEntry(hThread HANDLE, dwSelector uint32, lpSelectorEntry *WOW64_LDT_ENTRY) (r BOOL, err error)
+//sys	DebugSetProcessKillOnExit(KillOnExit BOOL) (r BOOL, err error)
+//sys	DebugBreakProcess(Process HANDLE) (r BOOL, err error)
+//sys	FormatMessageA(dwFlags FORMAT_MESSAGE_OPTIONS, lpSource unsafe.Pointer, dwMessageId uint32, dwLanguageId uint32, lpBuffer *PSTRElement, nSize uint32, Arguments **int8) (r uint32, err error)
+//sys	FormatMessageW(dwFlags FORMAT_MESSAGE_OPTIONS, lpSource unsafe.Pointer, dwMessageId uint32, dwLanguageId uint32, lpBuffer *PWSTRElement, nSize uint32, Arguments **int8) (r uint32, err error)
+//sys	CopyContext(Destination *CONTEXT, ContextFlags uint32, Source *CONTEXT) (r BOOL, err error)
+//sys	InitializeContext(Buffer unsafe.Pointer, ContextFlags uint32, Context **CONTEXT, ContextLength *uint32) (r BOOL, err error)
+//sys	InitializeContext2(Buffer unsafe.Pointer, ContextFlags uint32, Context **CONTEXT, ContextLength *uint32, XStateCompactionMask uint64) (r BOOL, err error)
+
+// Types used in generated APIs for
 
 type FIND_FIRST_EX_FLAGS uint32
 
@@ -1679,6 +1956,97 @@ const (
 	SYMBOLIC_LINK_FLAGS_SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE SYMBOLIC_LINK_FLAGS = 0x2
 )
 
+type SYM_LOAD_FLAGS uint32
+
+const (
+	SYM_LOAD_FLAGS_SLMFLAG_NONE       SYM_LOAD_FLAGS = 0x0
+	SYM_LOAD_FLAGS_SLMFLAG_VIRTUAL    SYM_LOAD_FLAGS = 0x1
+	SYM_LOAD_FLAGS_SLMFLAG_ALT_INDEX  SYM_LOAD_FLAGS = 0x2
+	SYM_LOAD_FLAGS_SLMFLAG_NO_SYMBOLS SYM_LOAD_FLAGS = 0x4
+)
+
+type THREAD_ERROR_MODE uint32
+
+const (
+	THREAD_ERROR_MODE_SEM_ALL_ERRORS             THREAD_ERROR_MODE = 0x0
+	THREAD_ERROR_MODE_SEM_FAILCRITICALERRORS     THREAD_ERROR_MODE = 0x1
+	THREAD_ERROR_MODE_SEM_NOGPFAULTERRORBOX      THREAD_ERROR_MODE = 0x2
+	THREAD_ERROR_MODE_SEM_NOOPENFILEERRORBOX     THREAD_ERROR_MODE = 0x8000
+	THREAD_ERROR_MODE_SEM_NOALIGNMENTFAULTEXCEPT THREAD_ERROR_MODE = 0x4
+)
+
+type FORMAT_MESSAGE_OPTIONS uint32
+
+const (
+	FORMAT_MESSAGE_OPTIONS_FORMAT_MESSAGE_ALLOCATE_BUFFER FORMAT_MESSAGE_OPTIONS = 0x100
+	FORMAT_MESSAGE_OPTIONS_FORMAT_MESSAGE_ARGUMENT_ARRAY  FORMAT_MESSAGE_OPTIONS = 0x2000
+	FORMAT_MESSAGE_OPTIONS_FORMAT_MESSAGE_FROM_HMODULE    FORMAT_MESSAGE_OPTIONS = 0x800
+	FORMAT_MESSAGE_OPTIONS_FORMAT_MESSAGE_FROM_STRING     FORMAT_MESSAGE_OPTIONS = 0x400
+	FORMAT_MESSAGE_OPTIONS_FORMAT_MESSAGE_FROM_SYSTEM     FORMAT_MESSAGE_OPTIONS = 0x1000
+	FORMAT_MESSAGE_OPTIONS_FORMAT_MESSAGE_IGNORE_INSERTS  FORMAT_MESSAGE_OPTIONS = 0x200
+)
+
+type RTL_VIRTUAL_UNWIND_HANDLER_TYPE uint32
+
+const (
+	RTL_VIRTUAL_UNWIND_HANDLER_TYPE_UNW_FLAG_NHANDLER  RTL_VIRTUAL_UNWIND_HANDLER_TYPE = 0x0
+	RTL_VIRTUAL_UNWIND_HANDLER_TYPE_UNW_FLAG_EHANDLER  RTL_VIRTUAL_UNWIND_HANDLER_TYPE = 0x1
+	RTL_VIRTUAL_UNWIND_HANDLER_TYPE_UNW_FLAG_UHANDLER  RTL_VIRTUAL_UNWIND_HANDLER_TYPE = 0x2
+	RTL_VIRTUAL_UNWIND_HANDLER_TYPE_UNW_FLAG_CHAININFO RTL_VIRTUAL_UNWIND_HANDLER_TYPE = 0x4
+)
+
+type OPEN_THREAD_WAIT_CHAIN_SESSION_FLAGS uint32
+
+const (
+	OPEN_THREAD_WAIT_CHAIN_SESSION_FLAGS_WCT_ASYNC_OPEN_FLAG OPEN_THREAD_WAIT_CHAIN_SESSION_FLAGS = 0x1
+)
+
+type SYM_SRV_STORE_FILE_FLAGS uint32
+
+const (
+	SYM_SRV_STORE_FILE_FLAGS_SYMSTOREOPT_COMPRESS       SYM_SRV_STORE_FILE_FLAGS = 0x1
+	SYM_SRV_STORE_FILE_FLAGS_SYMSTOREOPT_OVERWRITE      SYM_SRV_STORE_FILE_FLAGS = 0x2
+	SYM_SRV_STORE_FILE_FLAGS_SYMSTOREOPT_PASS_IF_EXISTS SYM_SRV_STORE_FILE_FLAGS = 0x40
+	SYM_SRV_STORE_FILE_FLAGS_SYMSTOREOPT_POINTER        SYM_SRV_STORE_FILE_FLAGS = 0x8
+	SYM_SRV_STORE_FILE_FLAGS_SYMSTOREOPT_RETURNINDEX    SYM_SRV_STORE_FILE_FLAGS = 0x4
+)
+
+type IMAGE_DIRECTORY_ENTRY uint32
+
+const (
+	IMAGE_DIRECTORY_ENTRY_ARCHITECTURE   IMAGE_DIRECTORY_ENTRY = 0x7
+	IMAGE_DIRECTORY_ENTRY_BASERELOC      IMAGE_DIRECTORY_ENTRY = 0x5
+	IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT   IMAGE_DIRECTORY_ENTRY = 0xb
+	IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR IMAGE_DIRECTORY_ENTRY = 0xe
+	IMAGE_DIRECTORY_ENTRY_DEBUG          IMAGE_DIRECTORY_ENTRY = 0x6
+	IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT   IMAGE_DIRECTORY_ENTRY = 0xd
+	IMAGE_DIRECTORY_ENTRY_EXCEPTION      IMAGE_DIRECTORY_ENTRY = 0x3
+	IMAGE_DIRECTORY_ENTRY_EXPORT         IMAGE_DIRECTORY_ENTRY = 0x0
+	IMAGE_DIRECTORY_ENTRY_GLOBALPTR      IMAGE_DIRECTORY_ENTRY = 0x8
+	IMAGE_DIRECTORY_ENTRY_IAT            IMAGE_DIRECTORY_ENTRY = 0xc
+	IMAGE_DIRECTORY_ENTRY_IMPORT         IMAGE_DIRECTORY_ENTRY = 0x1
+	IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG    IMAGE_DIRECTORY_ENTRY = 0xa
+	IMAGE_DIRECTORY_ENTRY_RESOURCE       IMAGE_DIRECTORY_ENTRY = 0x2
+	IMAGE_DIRECTORY_ENTRY_SECURITY       IMAGE_DIRECTORY_ENTRY = 0x4
+	IMAGE_DIRECTORY_ENTRY_TLS            IMAGE_DIRECTORY_ENTRY = 0x9
+)
+
+type WAIT_CHAIN_THREAD_OPTIONS uint32
+
+const (
+	WAIT_CHAIN_THREAD_OPTIONS_WCT_OUT_OF_PROC_COM_FLAG WAIT_CHAIN_THREAD_OPTIONS = 0x2
+	WAIT_CHAIN_THREAD_OPTIONS_WCT_OUT_OF_PROC_CS_FLAG  WAIT_CHAIN_THREAD_OPTIONS = 0x4
+	WAIT_CHAIN_THREAD_OPTIONS_WCT_OUT_OF_PROC_FLAG     WAIT_CHAIN_THREAD_OPTIONS = 0x1
+)
+
+type SYM_FIND_ID_OPTION uint32
+
+const (
+	SYM_FIND_ID_OPTION_SSRVOPT_DWORD    SYM_FIND_ID_OPTION = 0x2
+	SYM_FIND_ID_OPTION_SSRVOPT_DWORDPTR SYM_FIND_ID_OPTION = 0x4
+	SYM_FIND_ID_OPTION_SSRVOPT_GUIDPTR  SYM_FIND_ID_OPTION = 0x8
+)
+
 type FindFileHandle uintptr
 
 type FindFileNameHandle uintptr
@@ -1851,6 +2219,21 @@ const (
 	FILE_INFO_BY_HANDLE_CLASS_FileNormalizedNameInfo         FILE_INFO_BY_HANDLE_CLASS = 0x18
 	FILE_INFO_BY_HANDLE_CLASS_MaximumFileInfoByHandleClass   FILE_INFO_BY_HANDLE_CLASS = 0x19
 )
+
+type DEBUG_EVENT struct {
+	DwDebugEventCode DEBUG_EVENT_CODE
+	DwProcessId      uint32
+	DwThreadId       uint32
+	Exception        EXCEPTION_DEBUG_INFO
+}
+
+// Interface type is likely missing members. Not yet implemented in go-winmd.
+type IDataModelManager struct {
+}
+
+// Interface type is likely missing members. Not yet implemented in go-winmd.
+type IDebugHost struct {
+}
 
 type FILETIME struct {
 	DwLowDateTime  uint32
@@ -2116,6 +2499,8 @@ type IORING_CQE struct {
 	ResultCode  HRESULT
 	Information uintptr
 }
+
+type EXCEPTION_ROUTINE uintptr
 
 type PUBLICKEYSTRUC struct {
 	BType    uint8
@@ -2872,6 +3257,13 @@ type POLICY_ELEMENT struct {
 	UseManagedPresentation BOOL
 }
 
+type WIN_CERTIFICATE struct {
+	DwLength         uint32
+	WRevision        uint16
+	WCertificateType uint16
+	BCertificate     []uint8
+}
+
 type LARGE_INTEGER struct {
 	LowPart  uint32
 	HighPart int32
@@ -2882,8 +3274,645 @@ type ULARGE_INTEGER struct {
 	HighPart uint32
 }
 
+type LDT_ENTRY struct {
+	LimitLow uint16
+	BaseLow  uint16
+	BaseMid  uint8
+	Flags1   uint8
+	Flags2   uint8
+	BaseHi   uint8
+}
+
+type WOW64_CONTEXT struct {
+	ContextFlags      uint32
+	Dr0               uint32
+	Dr1               uint32
+	Dr2               uint32
+	Dr3               uint32
+	Dr6               uint32
+	Dr7               uint32
+	FloatSave         WOW64_FLOATING_SAVE_AREA
+	SegGs             uint32
+	SegFs             uint32
+	SegEs             uint32
+	SegDs             uint32
+	Edi               uint32
+	Esi               uint32
+	Ebx               uint32
+	Edx               uint32
+	Ecx               uint32
+	Eax               uint32
+	Ebp               uint32
+	Eip               uint32
+	SegCs             uint32
+	EFlags            uint32
+	Esp               uint32
+	SegSs             uint32
+	ExtendedRegisters []uint8
+}
+
+type WOW64_LDT_ENTRY struct {
+	LimitLow uint16
+	BaseLow  uint16
+	BaseMid  uint8
+	Flags1   uint8
+	Flags2   uint8
+	BaseHi   uint8
+}
+
+type EXCEPTION_RECORD struct {
+	ExceptionCode        NTSTATUS
+	ExceptionFlags       uint32
+	ExceptionRecord      *EXCEPTION_RECORD
+	ExceptionAddress     unsafe.Pointer
+	NumberParameters     uint32
+	ExceptionInformation []uintptr
+}
+
+type EXCEPTION_POINTERS struct {
+	ExceptionRecord *EXCEPTION_RECORD
+	ContextRecord   *CONTEXT
+}
+
+type IMAGE_NT_HEADERS64 struct {
+	Signature      uint32
+	FileHeader     IMAGE_FILE_HEADER
+	OptionalHeader IMAGE_OPTIONAL_HEADER64
+}
+
+type IMAGE_NT_HEADERS32 struct {
+	Signature      uint32
+	FileHeader     IMAGE_FILE_HEADER
+	OptionalHeader IMAGE_OPTIONAL_HEADER32
+}
+
+type IMAGE_SECTION_HEADER struct {
+	Name                 []uint8
+	PhysicalAddress      uint32
+	VirtualAddress       uint32
+	SizeOfRawData        uint32
+	PointerToRawData     uint32
+	PointerToRelocations uint32
+	PointerToLinenumbers uint32
+	NumberOfRelocations  uint16
+	NumberOfLinenumbers  uint16
+	Characteristics      IMAGE_SECTION_CHARACTERISTICS
+}
+
+type IMAGE_LOAD_CONFIG_DIRECTORY32 struct {
+	Size                                     uint32
+	TimeDateStamp                            uint32
+	MajorVersion                             uint16
+	MinorVersion                             uint16
+	GlobalFlagsClear                         uint32
+	GlobalFlagsSet                           uint32
+	CriticalSectionDefaultTimeout            uint32
+	DeCommitFreeBlockThreshold               uint32
+	DeCommitTotalFreeThreshold               uint32
+	LockPrefixTable                          uint32
+	MaximumAllocationSize                    uint32
+	VirtualMemoryThreshold                   uint32
+	ProcessHeapFlags                         uint32
+	ProcessAffinityMask                      uint32
+	CSDVersion                               uint16
+	DependentLoadFlags                       uint16
+	EditList                                 uint32
+	SecurityCookie                           uint32
+	SEHandlerTable                           uint32
+	SEHandlerCount                           uint32
+	GuardCFCheckFunctionPointer              uint32
+	GuardCFDispatchFunctionPointer           uint32
+	GuardCFFunctionTable                     uint32
+	GuardCFFunctionCount                     uint32
+	GuardFlags                               uint32
+	CodeIntegrity                            IMAGE_LOAD_CONFIG_CODE_INTEGRITY
+	GuardAddressTakenIatEntryTable           uint32
+	GuardAddressTakenIatEntryCount           uint32
+	GuardLongJumpTargetTable                 uint32
+	GuardLongJumpTargetCount                 uint32
+	DynamicValueRelocTable                   uint32
+	CHPEMetadataPointer                      uint32
+	GuardRFFailureRoutine                    uint32
+	GuardRFFailureRoutineFunctionPointer     uint32
+	DynamicValueRelocTableOffset             uint32
+	DynamicValueRelocTableSection            uint16
+	Reserved2                                uint16
+	GuardRFVerifyStackPointerFunctionPointer uint32
+	HotPatchTableOffset                      uint32
+	Reserved3                                uint32
+	EnclaveConfigurationPointer              uint32
+	VolatileMetadataPointer                  uint32
+	GuardEHContinuationTable                 uint32
+	GuardEHContinuationCount                 uint32
+	GuardXFGCheckFunctionPointer             uint32
+	GuardXFGDispatchFunctionPointer          uint32
+	GuardXFGTableDispatchFunctionPointer     uint32
+	CastGuardOsDeterminedFailureMode         uint32
+}
+
+type IMAGE_LOAD_CONFIG_DIRECTORY64 struct {
+	Size                                     uint32
+	TimeDateStamp                            uint32
+	MajorVersion                             uint16
+	MinorVersion                             uint16
+	GlobalFlagsClear                         uint32
+	GlobalFlagsSet                           uint32
+	CriticalSectionDefaultTimeout            uint32
+	DeCommitFreeBlockThreshold               uint64
+	DeCommitTotalFreeThreshold               uint64
+	LockPrefixTable                          uint64
+	MaximumAllocationSize                    uint64
+	VirtualMemoryThreshold                   uint64
+	ProcessAffinityMask                      uint64
+	ProcessHeapFlags                         uint32
+	CSDVersion                               uint16
+	DependentLoadFlags                       uint16
+	EditList                                 uint64
+	SecurityCookie                           uint64
+	SEHandlerTable                           uint64
+	SEHandlerCount                           uint64
+	GuardCFCheckFunctionPointer              uint64
+	GuardCFDispatchFunctionPointer           uint64
+	GuardCFFunctionTable                     uint64
+	GuardCFFunctionCount                     uint64
+	GuardFlags                               uint32
+	CodeIntegrity                            IMAGE_LOAD_CONFIG_CODE_INTEGRITY
+	GuardAddressTakenIatEntryTable           uint64
+	GuardAddressTakenIatEntryCount           uint64
+	GuardLongJumpTargetTable                 uint64
+	GuardLongJumpTargetCount                 uint64
+	DynamicValueRelocTable                   uint64
+	CHPEMetadataPointer                      uint64
+	GuardRFFailureRoutine                    uint64
+	GuardRFFailureRoutineFunctionPointer     uint64
+	DynamicValueRelocTableOffset             uint32
+	DynamicValueRelocTableSection            uint16
+	Reserved2                                uint16
+	GuardRFVerifyStackPointerFunctionPointer uint64
+	HotPatchTableOffset                      uint32
+	Reserved3                                uint32
+	EnclaveConfigurationPointer              uint64
+	VolatileMetadataPointer                  uint64
+	GuardEHContinuationTable                 uint64
+	GuardEHContinuationCount                 uint64
+	GuardXFGCheckFunctionPointer             uint64
+	GuardXFGDispatchFunctionPointer          uint64
+	GuardXFGTableDispatchFunctionPointer     uint64
+	CastGuardOsDeterminedFailureMode         uint64
+}
+
+type IMAGE_ARM64_RUNTIME_FUNCTION_ENTRY struct {
+	BeginAddress uint32
+	UnwindData   uint32
+}
+
+type IMAGE_RUNTIME_FUNCTION_ENTRY struct {
+	BeginAddress      uint32
+	EndAddress        uint32
+	UnwindInfoAddress uint32
+}
+
+type PVECTORED_EXCEPTION_HANDLER uintptr
+
 type FILE_SEGMENT_ELEMENT struct {
 	Buffer unsafe.Pointer
+}
+
+type LPTOP_LEVEL_EXCEPTION_FILTER uintptr
+
+type WAITCHAIN_NODE_INFO struct {
+	ObjectType   WCT_OBJECT_TYPE
+	ObjectStatus WCT_OBJECT_STATUS
+	ObjectName   []uint16
+	Timeout      LARGE_INTEGER
+	Alertable    BOOL
+}
+
+type PWAITCHAINCALLBACK uintptr
+
+type PCOGETCALLSTATE uintptr
+
+type PCOGETACTIVATIONSTATE uintptr
+
+type MINIDUMP_DIRECTORY struct {
+	StreamType uint32
+	Location   MINIDUMP_LOCATION_DESCRIPTOR
+}
+
+type MINIDUMP_EXCEPTION_INFORMATION struct {
+	ThreadId          uint32
+	ExceptionPointers *EXCEPTION_POINTERS
+	ClientPointers    BOOL
+}
+
+type MINIDUMP_USER_STREAM_INFORMATION struct {
+	UserStreamCount uint32
+	UserStreamArray *MINIDUMP_USER_STREAM
+}
+
+type MINIDUMP_TYPE uint32
+
+const (
+	MINIDUMP_TYPE_MiniDumpNormal                         MINIDUMP_TYPE = 0x0
+	MINIDUMP_TYPE_MiniDumpWithDataSegs                   MINIDUMP_TYPE = 0x1
+	MINIDUMP_TYPE_MiniDumpWithFullMemory                 MINIDUMP_TYPE = 0x2
+	MINIDUMP_TYPE_MiniDumpWithHandleData                 MINIDUMP_TYPE = 0x4
+	MINIDUMP_TYPE_MiniDumpFilterMemory                   MINIDUMP_TYPE = 0x8
+	MINIDUMP_TYPE_MiniDumpScanMemory                     MINIDUMP_TYPE = 0x10
+	MINIDUMP_TYPE_MiniDumpWithUnloadedModules            MINIDUMP_TYPE = 0x20
+	MINIDUMP_TYPE_MiniDumpWithIndirectlyReferencedMemory MINIDUMP_TYPE = 0x40
+	MINIDUMP_TYPE_MiniDumpFilterModulePaths              MINIDUMP_TYPE = 0x80
+	MINIDUMP_TYPE_MiniDumpWithProcessThreadData          MINIDUMP_TYPE = 0x100
+	MINIDUMP_TYPE_MiniDumpWithPrivateReadWriteMemory     MINIDUMP_TYPE = 0x200
+	MINIDUMP_TYPE_MiniDumpWithoutOptionalData            MINIDUMP_TYPE = 0x400
+	MINIDUMP_TYPE_MiniDumpWithFullMemoryInfo             MINIDUMP_TYPE = 0x800
+	MINIDUMP_TYPE_MiniDumpWithThreadInfo                 MINIDUMP_TYPE = 0x1000
+	MINIDUMP_TYPE_MiniDumpWithCodeSegs                   MINIDUMP_TYPE = 0x2000
+	MINIDUMP_TYPE_MiniDumpWithoutAuxiliaryState          MINIDUMP_TYPE = 0x4000
+	MINIDUMP_TYPE_MiniDumpWithFullAuxiliaryState         MINIDUMP_TYPE = 0x8000
+	MINIDUMP_TYPE_MiniDumpWithPrivateWriteCopyMemory     MINIDUMP_TYPE = 0x10000
+	MINIDUMP_TYPE_MiniDumpIgnoreInaccessibleMemory       MINIDUMP_TYPE = 0x20000
+	MINIDUMP_TYPE_MiniDumpWithTokenInformation           MINIDUMP_TYPE = 0x40000
+	MINIDUMP_TYPE_MiniDumpWithModuleHeaders              MINIDUMP_TYPE = 0x80000
+	MINIDUMP_TYPE_MiniDumpFilterTriage                   MINIDUMP_TYPE = 0x100000
+	MINIDUMP_TYPE_MiniDumpWithAvxXStateContext           MINIDUMP_TYPE = 0x200000
+	MINIDUMP_TYPE_MiniDumpWithIptTrace                   MINIDUMP_TYPE = 0x400000
+	MINIDUMP_TYPE_MiniDumpScanInaccessiblePartialPages   MINIDUMP_TYPE = 0x800000
+	MINIDUMP_TYPE_MiniDumpFilterWriteCombinedMemory      MINIDUMP_TYPE = 0x1000000
+	MINIDUMP_TYPE_MiniDumpValidTypeFlags                 MINIDUMP_TYPE = 0x1ffffff
+)
+
+type MINIDUMP_CALLBACK_INFORMATION struct {
+	CallbackRoutine MINIDUMP_CALLBACK_ROUTINE
+	CallbackParam   unsafe.Pointer
+}
+
+type PIMAGEHLP_STATUS_ROUTINE uintptr
+
+type DIGEST_FUNCTION uintptr
+
+type PFIND_DEBUG_FILE_CALLBACK uintptr
+
+type PFIND_DEBUG_FILE_CALLBACKW uintptr
+
+type PFINDFILEINPATHCALLBACK uintptr
+
+type PFINDFILEINPATHCALLBACKW uintptr
+
+type PFIND_EXE_FILE_CALLBACK uintptr
+
+type PFIND_EXE_FILE_CALLBACKW uintptr
+
+type PENUMDIRTREE_CALLBACK uintptr
+
+type PENUMDIRTREE_CALLBACKW uintptr
+
+type MODLOAD_DATA struct {
+	Ssize uint32
+	Ssig  MODLOAD_DATA_TYPE
+	Data  unsafe.Pointer
+	Size  uint32
+	Flags uint32
+}
+
+type STACKFRAME64 struct {
+	AddrPC         ADDRESS64
+	AddrReturn     ADDRESS64
+	AddrFrame      ADDRESS64
+	AddrStack      ADDRESS64
+	AddrBStore     ADDRESS64
+	FuncTableEntry unsafe.Pointer
+	Params         []uint64
+	Far            BOOL
+	Virtual        BOOL
+	Reserved       []uint64
+	KdHelp         KDHELP64
+}
+
+type STACKFRAME_EX struct {
+	AddrPC             ADDRESS64
+	AddrReturn         ADDRESS64
+	AddrFrame          ADDRESS64
+	AddrStack          ADDRESS64
+	AddrBStore         ADDRESS64
+	FuncTableEntry     unsafe.Pointer
+	Params             []uint64
+	Far                BOOL
+	Virtual            BOOL
+	Reserved           []uint64
+	KdHelp             KDHELP64
+	StackFrameSize     uint32
+	InlineFrameContext uint32
+}
+
+type PREAD_PROCESS_MEMORY_ROUTINE64 uintptr
+
+type PFUNCTION_TABLE_ACCESS_ROUTINE64 uintptr
+
+type PGET_MODULE_BASE_ROUTINE64 uintptr
+
+type PTRANSLATE_ADDRESS_ROUTINE64 uintptr
+
+type API_VERSION struct {
+	MajorVersion uint16
+	MinorVersion uint16
+	Revision     uint16
+	Reserved     uint16
+}
+
+type PSYM_ENUMMODULES_CALLBACK64 uintptr
+
+type PSYM_ENUMMODULES_CALLBACKW64 uintptr
+
+type PENUMLOADED_MODULES_CALLBACK64 uintptr
+
+type PENUMLOADED_MODULES_CALLBACKW64 uintptr
+
+type PSYM_ENUMSYMBOLS_CALLBACK64 uintptr
+
+type PSYM_ENUMSYMBOLS_CALLBACK64W uintptr
+
+type PSYMBOL_REGISTERED_CALLBACK64 uintptr
+
+type PSYMBOL_FUNCENTRY_CALLBACK uintptr
+
+type PSYMBOL_FUNCENTRY_CALLBACK64 uintptr
+
+type IMAGEHLP_SYMBOL64 struct {
+	SizeOfStruct  uint32
+	Address       uint64
+	Size          uint32
+	Flags         uint32
+	MaxNameLength uint32
+	Name          []CHAR
+}
+
+type IMAGEHLP_MODULE64 struct {
+	SizeOfStruct    uint32
+	BaseOfImage     uint64
+	ImageSize       uint32
+	TimeDateStamp   uint32
+	CheckSum        uint32
+	NumSyms         uint32
+	SymType         SYM_TYPE
+	ModuleName      []CHAR
+	ImageName       []CHAR
+	LoadedImageName []CHAR
+	LoadedPdbName   []CHAR
+	CVSig           uint32
+	CVData          []CHAR
+	PdbSig          uint32
+	PdbSig70        Guid
+	PdbAge          uint32
+	PdbUnmatched    BOOL
+	DbgUnmatched    BOOL
+	LineNumbers     BOOL
+	GlobalSymbols   BOOL
+	TypeInfo        BOOL
+	SourceIndexed   BOOL
+	Publics         BOOL
+	MachineType     uint32
+	Reserved        uint32
+}
+
+type IMAGEHLP_MODULEW64 struct {
+	SizeOfStruct    uint32
+	BaseOfImage     uint64
+	ImageSize       uint32
+	TimeDateStamp   uint32
+	CheckSum        uint32
+	NumSyms         uint32
+	SymType         SYM_TYPE
+	ModuleName      []uint16
+	ImageName       []uint16
+	LoadedImageName []uint16
+	LoadedPdbName   []uint16
+	CVSig           uint32
+	CVData          []uint16
+	PdbSig          uint32
+	PdbSig70        Guid
+	PdbAge          uint32
+	PdbUnmatched    BOOL
+	DbgUnmatched    BOOL
+	LineNumbers     BOOL
+	GlobalSymbols   BOOL
+	TypeInfo        BOOL
+	SourceIndexed   BOOL
+	Publics         BOOL
+	MachineType     uint32
+	Reserved        uint32
+}
+
+type IMAGEHLP_LINE64 struct {
+	SizeOfStruct uint32
+	Key          unsafe.Pointer
+	LineNumber   uint32
+	FileName     *PSTRElement
+	Address      uint64
+}
+
+type IMAGEHLP_LINEW64 struct {
+	SizeOfStruct uint32
+	Key          unsafe.Pointer
+	LineNumber   uint32
+	FileName     *PWSTRElement
+	Address      uint64
+}
+
+type IMAGEHLP_HD_TYPE int32
+
+const (
+	IMAGEHLP_HD_TYPE_HdBase IMAGEHLP_HD_TYPE = 0x0
+	IMAGEHLP_HD_TYPE_HdSym  IMAGEHLP_HD_TYPE = 0x1
+	IMAGEHLP_HD_TYPE_HdSrc  IMAGEHLP_HD_TYPE = 0x2
+	IMAGEHLP_HD_TYPE_HdMax  IMAGEHLP_HD_TYPE = 0x3
+)
+
+type OMAP struct {
+	Rva   uint32
+	RvaTo uint32
+}
+
+type IMAGEHLP_EXTENDED_OPTIONS int32
+
+const (
+	IMAGEHLP_EXTENDED_OPTIONS_SYMOPT_EX_DISABLEACCESSTIMEUPDATE IMAGEHLP_EXTENDED_OPTIONS = 0x0
+	IMAGEHLP_EXTENDED_OPTIONS_SYMOPT_EX_LASTVALIDDEBUGDIRECTORY IMAGEHLP_EXTENDED_OPTIONS = 0x1
+	IMAGEHLP_EXTENDED_OPTIONS_SYMOPT_EX_NOIMPLICITPATTERNSEARCH IMAGEHLP_EXTENDED_OPTIONS = 0x2
+	IMAGEHLP_EXTENDED_OPTIONS_SYMOPT_EX_NEVERLOADSYMBOLS        IMAGEHLP_EXTENDED_OPTIONS = 0x3
+	IMAGEHLP_EXTENDED_OPTIONS_SYMOPT_EX_MAX                     IMAGEHLP_EXTENDED_OPTIONS = 0x4
+)
+
+type PSYM_ENUMSOURCEFILES_CALLBACK uintptr
+
+type PSYM_ENUMSOURCEFILES_CALLBACKW uintptr
+
+type PSYM_ENUMLINES_CALLBACK uintptr
+
+type PSYM_ENUMLINES_CALLBACKW uintptr
+
+type PENUMSOURCEFILETOKENSCALLBACK uintptr
+
+type SYMBOL_INFO struct {
+	SizeOfStruct uint32
+	TypeIndex    uint32
+	Reserved     []uint64
+	Index        uint32
+	Size         uint32
+	ModBase      uint64
+	Flags        SYMBOL_INFO_FLAGS
+	Value        uint64
+	Address      uint64
+	Register     uint32
+	Scope        uint32
+	Tag          uint32
+	NameLen      uint32
+	MaxNameLen   uint32
+	Name         []CHAR
+}
+
+type SYMBOL_INFOW struct {
+	SizeOfStruct uint32
+	TypeIndex    uint32
+	Reserved     []uint64
+	Index        uint32
+	Size         uint32
+	ModBase      uint64
+	Flags        SYMBOL_INFO_FLAGS
+	Value        uint64
+	Address      uint64
+	Register     uint32
+	Scope        uint32
+	Tag          uint32
+	NameLen      uint32
+	MaxNameLen   uint32
+	Name         []uint16
+}
+
+type IMAGEHLP_STACK_FRAME struct {
+	InstructionOffset  uint64
+	ReturnOffset       uint64
+	FrameOffset        uint64
+	StackOffset        uint64
+	BackingStoreOffset uint64
+	FuncTableEntry     uint64
+	Params             []uint64
+	Reserved           []uint64
+	Virtual            BOOL
+	Reserved2          uint32
+}
+
+type PSYM_ENUMPROCESSES_CALLBACK uintptr
+
+type PSYM_ENUMERATESYMBOLS_CALLBACK uintptr
+
+type PSYM_ENUMERATESYMBOLS_CALLBACKW uintptr
+
+type IMAGEHLP_SYMBOL_TYPE_INFO int32
+
+const (
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_SYMTAG                   IMAGEHLP_SYMBOL_TYPE_INFO = 0x0
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_SYMNAME                  IMAGEHLP_SYMBOL_TYPE_INFO = 0x1
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_LENGTH                   IMAGEHLP_SYMBOL_TYPE_INFO = 0x2
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_TYPE                     IMAGEHLP_SYMBOL_TYPE_INFO = 0x3
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_TYPEID                   IMAGEHLP_SYMBOL_TYPE_INFO = 0x4
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_BASETYPE                 IMAGEHLP_SYMBOL_TYPE_INFO = 0x5
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_ARRAYINDEXTYPEID         IMAGEHLP_SYMBOL_TYPE_INFO = 0x6
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_FINDCHILDREN                 IMAGEHLP_SYMBOL_TYPE_INFO = 0x7
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_DATAKIND                 IMAGEHLP_SYMBOL_TYPE_INFO = 0x8
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_ADDRESSOFFSET            IMAGEHLP_SYMBOL_TYPE_INFO = 0x9
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_OFFSET                   IMAGEHLP_SYMBOL_TYPE_INFO = 0xa
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_VALUE                    IMAGEHLP_SYMBOL_TYPE_INFO = 0xb
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_COUNT                    IMAGEHLP_SYMBOL_TYPE_INFO = 0xc
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_CHILDRENCOUNT            IMAGEHLP_SYMBOL_TYPE_INFO = 0xd
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_BITPOSITION              IMAGEHLP_SYMBOL_TYPE_INFO = 0xe
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_VIRTUALBASECLASS         IMAGEHLP_SYMBOL_TYPE_INFO = 0xf
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_VIRTUALTABLESHAPEID      IMAGEHLP_SYMBOL_TYPE_INFO = 0x10
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_VIRTUALBASEPOINTEROFFSET IMAGEHLP_SYMBOL_TYPE_INFO = 0x11
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_CLASSPARENTID            IMAGEHLP_SYMBOL_TYPE_INFO = 0x12
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_NESTED                   IMAGEHLP_SYMBOL_TYPE_INFO = 0x13
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_SYMINDEX                 IMAGEHLP_SYMBOL_TYPE_INFO = 0x14
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_LEXICALPARENT            IMAGEHLP_SYMBOL_TYPE_INFO = 0x15
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_ADDRESS                  IMAGEHLP_SYMBOL_TYPE_INFO = 0x16
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_THISADJUST               IMAGEHLP_SYMBOL_TYPE_INFO = 0x17
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_UDTKIND                  IMAGEHLP_SYMBOL_TYPE_INFO = 0x18
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_IS_EQUIV_TO                  IMAGEHLP_SYMBOL_TYPE_INFO = 0x19
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_CALLING_CONVENTION       IMAGEHLP_SYMBOL_TYPE_INFO = 0x1a
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_IS_CLOSE_EQUIV_TO            IMAGEHLP_SYMBOL_TYPE_INFO = 0x1b
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GTIEX_REQS_VALID             IMAGEHLP_SYMBOL_TYPE_INFO = 0x1c
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_VIRTUALBASEOFFSET        IMAGEHLP_SYMBOL_TYPE_INFO = 0x1d
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_VIRTUALBASEDISPINDEX     IMAGEHLP_SYMBOL_TYPE_INFO = 0x1e
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_IS_REFERENCE             IMAGEHLP_SYMBOL_TYPE_INFO = 0x1f
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_INDIRECTVIRTUALBASECLASS IMAGEHLP_SYMBOL_TYPE_INFO = 0x20
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_VIRTUALBASETABLETYPE     IMAGEHLP_SYMBOL_TYPE_INFO = 0x21
+	IMAGEHLP_SYMBOL_TYPE_INFO_TI_GET_OBJECTPOINTERTYPE        IMAGEHLP_SYMBOL_TYPE_INFO = 0x22
+	IMAGEHLP_SYMBOL_TYPE_INFO_MAX                             IMAGEHLP_SYMBOL_TYPE_INFO = 0x23
+)
+
+type IMAGEHLP_GET_TYPE_INFO_PARAMS struct {
+	SizeOfStruct   uint32
+	Flags          IMAGEHLP_GET_TYPE_INFO_FLAGS
+	NumIds         uint32
+	TypeIds        *uint32
+	TagFilter      uint64
+	NumReqs        uint32
+	ReqKinds       *IMAGEHLP_SYMBOL_TYPE_INFO
+	ReqOffsets     *uintptr
+	ReqSizes       *uint32
+	ReqStride      uintptr
+	BufferSize     uintptr
+	Buffer         unsafe.Pointer
+	EntriesMatched uint32
+	EntriesFilled  uint32
+	TagsFound      uint64
+	AllReqsValid   uint64
+	NumReqsValid   uint32
+	ReqsValid      *uint64
+}
+
+type SYMSRV_INDEX_INFO struct {
+	Sizeofstruct uint32
+	File         []CHAR
+	Stripped     BOOL
+	Timestamp    uint32
+	Size         uint32
+	Dbgfile      []CHAR
+	Pdbfile      []CHAR
+	Guid         Guid
+	Sig          uint32
+	Age          uint32
+}
+
+type SYMSRV_INDEX_INFOW struct {
+	Sizeofstruct uint32
+	File         []uint16
+	Stripped     BOOL
+	Timestamp    uint32
+	Size         uint32
+	Dbgfile      []uint16
+	Pdbfile      []uint16
+	Guid         Guid
+	Sig          uint32
+	Age          uint32
+}
+
+type IMAGEHLP_SF_TYPE int32
+
+const (
+	IMAGEHLP_SF_TYPE_SfImage IMAGEHLP_SF_TYPE = 0x0
+	IMAGEHLP_SF_TYPE_SfDbg   IMAGEHLP_SF_TYPE = 0x1
+	IMAGEHLP_SF_TYPE_SfPdb   IMAGEHLP_SF_TYPE = 0x2
+	IMAGEHLP_SF_TYPE_SfMpd   IMAGEHLP_SF_TYPE = 0x3
+	IMAGEHLP_SF_TYPE_SfMax   IMAGEHLP_SF_TYPE = 0x4
+)
+
+type PDBGHELP_CREATE_USER_DUMP_CALLBACK uintptr
+
+type LPCALL_BACK_USER_INTERRUPT_ROUTINE uintptr
+
+type DBGHELP_DATA_REPORT_STRUCT struct {
+	PBinPathNonExist    *PWSTRElement
+	PSymbolPathNonExist *PWSTRElement
 }
 
 type OBJECT_ATTRIBUTES struct {
@@ -3057,7 +4086,126 @@ const (
 	NCRYPT_ALGORITHM_NAME_CLASS_NCRYPT_SIGNATURE_INTERFACE             NCRYPT_ALGORITHM_NAME_CLASS = 0x5
 )
 
+type IMAGE_SECTION_CHARACTERISTICS uint32
+
+const (
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_TYPE_NO_PAD            IMAGE_SECTION_CHARACTERISTICS = 0x8
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_CNT_CODE               IMAGE_SECTION_CHARACTERISTICS = 0x20
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_CNT_INITIALIZED_DATA   IMAGE_SECTION_CHARACTERISTICS = 0x40
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_CNT_UNINITIALIZED_DATA IMAGE_SECTION_CHARACTERISTICS = 0x80
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_LNK_OTHER              IMAGE_SECTION_CHARACTERISTICS = 0x100
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_LNK_INFO               IMAGE_SECTION_CHARACTERISTICS = 0x200
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_LNK_REMOVE             IMAGE_SECTION_CHARACTERISTICS = 0x800
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_LNK_COMDAT             IMAGE_SECTION_CHARACTERISTICS = 0x1000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_NO_DEFER_SPEC_EXC      IMAGE_SECTION_CHARACTERISTICS = 0x4000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_GPREL                  IMAGE_SECTION_CHARACTERISTICS = 0x8000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_MEM_FARDATA            IMAGE_SECTION_CHARACTERISTICS = 0x8000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_MEM_PURGEABLE          IMAGE_SECTION_CHARACTERISTICS = 0x20000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_MEM_16BIT              IMAGE_SECTION_CHARACTERISTICS = 0x20000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_MEM_LOCKED             IMAGE_SECTION_CHARACTERISTICS = 0x40000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_MEM_PRELOAD            IMAGE_SECTION_CHARACTERISTICS = 0x80000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_ALIGN_1BYTES           IMAGE_SECTION_CHARACTERISTICS = 0x100000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_ALIGN_2BYTES           IMAGE_SECTION_CHARACTERISTICS = 0x200000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_ALIGN_4BYTES           IMAGE_SECTION_CHARACTERISTICS = 0x300000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_ALIGN_8BYTES           IMAGE_SECTION_CHARACTERISTICS = 0x400000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_ALIGN_16BYTES          IMAGE_SECTION_CHARACTERISTICS = 0x500000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_ALIGN_32BYTES          IMAGE_SECTION_CHARACTERISTICS = 0x600000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_ALIGN_64BYTES          IMAGE_SECTION_CHARACTERISTICS = 0x700000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_ALIGN_128BYTES         IMAGE_SECTION_CHARACTERISTICS = 0x800000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_ALIGN_256BYTES         IMAGE_SECTION_CHARACTERISTICS = 0x900000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_ALIGN_512BYTES         IMAGE_SECTION_CHARACTERISTICS = 0xa00000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_ALIGN_1024BYTES        IMAGE_SECTION_CHARACTERISTICS = 0xb00000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_ALIGN_2048BYTES        IMAGE_SECTION_CHARACTERISTICS = 0xc00000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_ALIGN_4096BYTES        IMAGE_SECTION_CHARACTERISTICS = 0xd00000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_ALIGN_8192BYTES        IMAGE_SECTION_CHARACTERISTICS = 0xe00000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_ALIGN_MASK             IMAGE_SECTION_CHARACTERISTICS = 0xf00000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_LNK_NRELOC_OVFL        IMAGE_SECTION_CHARACTERISTICS = 0x1000000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_MEM_DISCARDABLE        IMAGE_SECTION_CHARACTERISTICS = 0x2000000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_MEM_NOT_CACHED         IMAGE_SECTION_CHARACTERISTICS = 0x4000000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_MEM_NOT_PAGED          IMAGE_SECTION_CHARACTERISTICS = 0x8000000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_MEM_SHARED             IMAGE_SECTION_CHARACTERISTICS = 0x10000000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_MEM_EXECUTE            IMAGE_SECTION_CHARACTERISTICS = 0x20000000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_MEM_READ               IMAGE_SECTION_CHARACTERISTICS = 0x40000000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_MEM_WRITE              IMAGE_SECTION_CHARACTERISTICS = 0x80000000
+	IMAGE_SECTION_CHARACTERISTICS_IMAGE_SCN_SCALE_INDEX            IMAGE_SECTION_CHARACTERISTICS = 0x1
+)
+
+type IMAGE_FILE_CHARACTERISTICS2 uint32
+
+const (
+	IMAGE_FILE_CHARACTERISTICS2_IMAGE_FILE_RELOCS_STRIPPED2         IMAGE_FILE_CHARACTERISTICS2 = 0x1
+	IMAGE_FILE_CHARACTERISTICS2_IMAGE_FILE_EXECUTABLE_IMAGE2        IMAGE_FILE_CHARACTERISTICS2 = 0x2
+	IMAGE_FILE_CHARACTERISTICS2_IMAGE_FILE_LINE_NUMS_STRIPPED2      IMAGE_FILE_CHARACTERISTICS2 = 0x4
+	IMAGE_FILE_CHARACTERISTICS2_IMAGE_FILE_LOCAL_SYMS_STRIPPED2     IMAGE_FILE_CHARACTERISTICS2 = 0x8
+	IMAGE_FILE_CHARACTERISTICS2_IMAGE_FILE_AGGRESIVE_WS_TRIM2       IMAGE_FILE_CHARACTERISTICS2 = 0x10
+	IMAGE_FILE_CHARACTERISTICS2_IMAGE_FILE_LARGE_ADDRESS_AWARE2     IMAGE_FILE_CHARACTERISTICS2 = 0x20
+	IMAGE_FILE_CHARACTERISTICS2_IMAGE_FILE_BYTES_REVERSED_LO2       IMAGE_FILE_CHARACTERISTICS2 = 0x80
+	IMAGE_FILE_CHARACTERISTICS2_IMAGE_FILE_32BIT_MACHINE2           IMAGE_FILE_CHARACTERISTICS2 = 0x100
+	IMAGE_FILE_CHARACTERISTICS2_IMAGE_FILE_DEBUG_STRIPPED2          IMAGE_FILE_CHARACTERISTICS2 = 0x200
+	IMAGE_FILE_CHARACTERISTICS2_IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP2 IMAGE_FILE_CHARACTERISTICS2 = 0x400
+	IMAGE_FILE_CHARACTERISTICS2_IMAGE_FILE_NET_RUN_FROM_SWAP2       IMAGE_FILE_CHARACTERISTICS2 = 0x800
+	IMAGE_FILE_CHARACTERISTICS2_IMAGE_FILE_SYSTEM_2                 IMAGE_FILE_CHARACTERISTICS2 = 0x1000
+	IMAGE_FILE_CHARACTERISTICS2_IMAGE_FILE_DLL_2                    IMAGE_FILE_CHARACTERISTICS2 = 0x2000
+	IMAGE_FILE_CHARACTERISTICS2_IMAGE_FILE_UP_SYSTEM_ONLY_2         IMAGE_FILE_CHARACTERISTICS2 = 0x4000
+	IMAGE_FILE_CHARACTERISTICS2_IMAGE_FILE_BYTES_REVERSED_HI_2      IMAGE_FILE_CHARACTERISTICS2 = 0x8000
+)
+
+type SYMBOL_INFO_FLAGS uint32
+
+const (
+	SYMBOL_INFO_FLAGS_SYMFLAG_CLR_TOKEN    SYMBOL_INFO_FLAGS = 0x40000
+	SYMBOL_INFO_FLAGS_SYMFLAG_CONSTANT     SYMBOL_INFO_FLAGS = 0x100
+	SYMBOL_INFO_FLAGS_SYMFLAG_EXPORT       SYMBOL_INFO_FLAGS = 0x200
+	SYMBOL_INFO_FLAGS_SYMFLAG_FORWARDER    SYMBOL_INFO_FLAGS = 0x400
+	SYMBOL_INFO_FLAGS_SYMFLAG_FRAMEREL     SYMBOL_INFO_FLAGS = 0x20
+	SYMBOL_INFO_FLAGS_SYMFLAG_FUNCTION     SYMBOL_INFO_FLAGS = 0x800
+	SYMBOL_INFO_FLAGS_SYMFLAG_ILREL        SYMBOL_INFO_FLAGS = 0x10000
+	SYMBOL_INFO_FLAGS_SYMFLAG_LOCAL        SYMBOL_INFO_FLAGS = 0x80
+	SYMBOL_INFO_FLAGS_SYMFLAG_METADATA     SYMBOL_INFO_FLAGS = 0x20000
+	SYMBOL_INFO_FLAGS_SYMFLAG_PARAMETER    SYMBOL_INFO_FLAGS = 0x40
+	SYMBOL_INFO_FLAGS_SYMFLAG_REGISTER     SYMBOL_INFO_FLAGS = 0x8
+	SYMBOL_INFO_FLAGS_SYMFLAG_REGREL       SYMBOL_INFO_FLAGS = 0x10
+	SYMBOL_INFO_FLAGS_SYMFLAG_SLOT         SYMBOL_INFO_FLAGS = 0x8000
+	SYMBOL_INFO_FLAGS_SYMFLAG_THUNK        SYMBOL_INFO_FLAGS = 0x2000
+	SYMBOL_INFO_FLAGS_SYMFLAG_TLSREL       SYMBOL_INFO_FLAGS = 0x4000
+	SYMBOL_INFO_FLAGS_SYMFLAG_VALUEPRESENT SYMBOL_INFO_FLAGS = 0x1
+	SYMBOL_INFO_FLAGS_SYMFLAG_VIRTUAL      SYMBOL_INFO_FLAGS = 0x1000
+)
+
+type IMAGEHLP_GET_TYPE_INFO_FLAGS uint32
+
+const (
+	IMAGEHLP_GET_TYPE_INFO_FLAGS_IMAGEHLP_GET_TYPE_INFO_CHILDREN IMAGEHLP_GET_TYPE_INFO_FLAGS = 0x2
+	IMAGEHLP_GET_TYPE_INFO_FLAGS_IMAGEHLP_GET_TYPE_INFO_UNCACHED IMAGEHLP_GET_TYPE_INFO_FLAGS = 0x1
+)
+
+type DEBUG_EVENT_CODE uint32
+
+const (
+	DEBUG_EVENT_CODE_CREATE_PROCESS_DEBUG_EVENT DEBUG_EVENT_CODE = 0x3
+	DEBUG_EVENT_CODE_CREATE_THREAD_DEBUG_EVENT  DEBUG_EVENT_CODE = 0x2
+	DEBUG_EVENT_CODE_EXCEPTION_DEBUG_EVENT      DEBUG_EVENT_CODE = 0x1
+	DEBUG_EVENT_CODE_EXIT_PROCESS_DEBUG_EVENT   DEBUG_EVENT_CODE = 0x5
+	DEBUG_EVENT_CODE_EXIT_THREAD_DEBUG_EVENT    DEBUG_EVENT_CODE = 0x4
+	DEBUG_EVENT_CODE_LOAD_DLL_DEBUG_EVENT       DEBUG_EVENT_CODE = 0x6
+	DEBUG_EVENT_CODE_OUTPUT_DEBUG_STRING_EVENT  DEBUG_EVENT_CODE = 0x8
+	DEBUG_EVENT_CODE_RIP_EVENT                  DEBUG_EVENT_CODE = 0x9
+	DEBUG_EVENT_CODE_UNLOAD_DLL_DEBUG_EVENT     DEBUG_EVENT_CODE = 0x7
+)
+
+type MODLOAD_DATA_TYPE uint32
+
+const (
+	MODLOAD_DATA_TYPE_DBHHEADER_DEBUGDIRS MODLOAD_DATA_TYPE = 0x1
+	MODLOAD_DATA_TYPE_DBHHEADER_CVMISC    MODLOAD_DATA_TYPE = 0x2
+)
+
 type CHAR uint8
+
+type EXCEPTION_DEBUG_INFO struct {
+	ExceptionRecord EXCEPTION_RECORD
+	DwFirstChance   uint32
+}
 
 type CLFS_NODE_ID struct {
 	CType  uint32
@@ -3130,6 +4278,11 @@ const (
 	IORING_REF_KIND_IORING_REF_RAW        IORING_REF_KIND = 0x0
 	IORING_REF_KIND_IORING_REF_REGISTERED IORING_REF_KIND = 0x1
 )
+
+type LIST_ENTRY struct {
+	Flink *LIST_ENTRY
+	Blink *LIST_ENTRY
+}
 
 type UNICODE_STRING struct {
 	Length        uint16
@@ -3321,12 +4474,206 @@ const (
 	HandleType_Hash       HandleType = 0x4
 )
 
+type M128A struct {
+	Low  uint64
+	High int64
+}
+
+type ARM64_NT_NEON128 struct {
+	Low  uint64
+	High int64
+}
+
+type WOW64_FLOATING_SAVE_AREA struct {
+	ControlWord   uint32
+	StatusWord    uint32
+	TagWord       uint32
+	ErrorOffset   uint32
+	ErrorSelector uint32
+	DataOffset    uint32
+	DataSelector  uint32
+	RegisterArea  []uint8
+	Cr0NpxState   uint32
+}
+
+type IMAGE_FILE_HEADER struct {
+	Machine              IMAGE_FILE_MACHINE
+	NumberOfSections     uint16
+	TimeDateStamp        uint32
+	PointerToSymbolTable uint32
+	NumberOfSymbols      uint32
+	SizeOfOptionalHeader uint16
+	Characteristics      IMAGE_FILE_CHARACTERISTICS
+}
+
+type IMAGE_OPTIONAL_HEADER32 struct {
+	Magic                       IMAGE_OPTIONAL_HEADER_MAGIC
+	MajorLinkerVersion          uint8
+	MinorLinkerVersion          uint8
+	SizeOfCode                  uint32
+	SizeOfInitializedData       uint32
+	SizeOfUninitializedData     uint32
+	AddressOfEntryPoint         uint32
+	BaseOfCode                  uint32
+	BaseOfData                  uint32
+	ImageBase                   uint32
+	SectionAlignment            uint32
+	FileAlignment               uint32
+	MajorOperatingSystemVersion uint16
+	MinorOperatingSystemVersion uint16
+	MajorImageVersion           uint16
+	MinorImageVersion           uint16
+	MajorSubsystemVersion       uint16
+	MinorSubsystemVersion       uint16
+	Win32VersionValue           uint32
+	SizeOfImage                 uint32
+	SizeOfHeaders               uint32
+	CheckSum                    uint32
+	Subsystem                   IMAGE_SUBSYSTEM
+	DllCharacteristics          IMAGE_DLL_CHARACTERISTICS
+	SizeOfStackReserve          uint32
+	SizeOfStackCommit           uint32
+	SizeOfHeapReserve           uint32
+	SizeOfHeapCommit            uint32
+	LoaderFlags                 uint32
+	NumberOfRvaAndSizes         uint32
+	DataDirectory               []IMAGE_DATA_DIRECTORY
+}
+
+type IMAGE_OPTIONAL_HEADER64 struct {
+	Magic                       IMAGE_OPTIONAL_HEADER_MAGIC
+	MajorLinkerVersion          uint8
+	MinorLinkerVersion          uint8
+	SizeOfCode                  uint32
+	SizeOfInitializedData       uint32
+	SizeOfUninitializedData     uint32
+	AddressOfEntryPoint         uint32
+	BaseOfCode                  uint32
+	ImageBase                   uint64
+	SectionAlignment            uint32
+	FileAlignment               uint32
+	MajorOperatingSystemVersion uint16
+	MinorOperatingSystemVersion uint16
+	MajorImageVersion           uint16
+	MinorImageVersion           uint16
+	MajorSubsystemVersion       uint16
+	MinorSubsystemVersion       uint16
+	Win32VersionValue           uint32
+	SizeOfImage                 uint32
+	SizeOfHeaders               uint32
+	CheckSum                    uint32
+	Subsystem                   IMAGE_SUBSYSTEM
+	DllCharacteristics          IMAGE_DLL_CHARACTERISTICS
+	SizeOfStackReserve          uint64
+	SizeOfStackCommit           uint64
+	SizeOfHeapReserve           uint64
+	SizeOfHeapCommit            uint64
+	LoaderFlags                 uint32
+	NumberOfRvaAndSizes         uint32
+	DataDirectory               []IMAGE_DATA_DIRECTORY
+}
+
+type IMAGE_LOAD_CONFIG_CODE_INTEGRITY struct {
+	Flags         uint16
+	Catalog       uint16
+	CatalogOffset uint32
+	Reserved      uint32
+}
+
 type SID struct {
 	Revision            uint8
 	SubAuthorityCount   uint8
 	IdentifierAuthority SID_IDENTIFIER_AUTHORITY
 	SubAuthority        []uint32
 }
+
+type WCT_OBJECT_TYPE int32
+
+const (
+	WCT_OBJECT_TYPE_WctCriticalSectionType WCT_OBJECT_TYPE = 0x1
+	WCT_OBJECT_TYPE_WctSendMessageType     WCT_OBJECT_TYPE = 0x2
+	WCT_OBJECT_TYPE_WctMutexType           WCT_OBJECT_TYPE = 0x3
+	WCT_OBJECT_TYPE_WctAlpcType            WCT_OBJECT_TYPE = 0x4
+	WCT_OBJECT_TYPE_WctComType             WCT_OBJECT_TYPE = 0x5
+	WCT_OBJECT_TYPE_WctThreadWaitType      WCT_OBJECT_TYPE = 0x6
+	WCT_OBJECT_TYPE_WctProcessWaitType     WCT_OBJECT_TYPE = 0x7
+	WCT_OBJECT_TYPE_WctThreadType          WCT_OBJECT_TYPE = 0x8
+	WCT_OBJECT_TYPE_WctComActivationType   WCT_OBJECT_TYPE = 0x9
+	WCT_OBJECT_TYPE_WctUnknownType         WCT_OBJECT_TYPE = 0xa
+	WCT_OBJECT_TYPE_WctSocketIoType        WCT_OBJECT_TYPE = 0xb
+	WCT_OBJECT_TYPE_WctSmbIoType           WCT_OBJECT_TYPE = 0xc
+	WCT_OBJECT_TYPE_WctMaxType             WCT_OBJECT_TYPE = 0xd
+)
+
+type WCT_OBJECT_STATUS int32
+
+const (
+	WCT_OBJECT_STATUS_WctStatusNoAccess     WCT_OBJECT_STATUS = 0x1
+	WCT_OBJECT_STATUS_WctStatusRunning      WCT_OBJECT_STATUS = 0x2
+	WCT_OBJECT_STATUS_WctStatusBlocked      WCT_OBJECT_STATUS = 0x3
+	WCT_OBJECT_STATUS_WctStatusPidOnly      WCT_OBJECT_STATUS = 0x4
+	WCT_OBJECT_STATUS_WctStatusPidOnlyRpcss WCT_OBJECT_STATUS = 0x5
+	WCT_OBJECT_STATUS_WctStatusOwned        WCT_OBJECT_STATUS = 0x6
+	WCT_OBJECT_STATUS_WctStatusNotOwned     WCT_OBJECT_STATUS = 0x7
+	WCT_OBJECT_STATUS_WctStatusAbandoned    WCT_OBJECT_STATUS = 0x8
+	WCT_OBJECT_STATUS_WctStatusUnknown      WCT_OBJECT_STATUS = 0x9
+	WCT_OBJECT_STATUS_WctStatusError        WCT_OBJECT_STATUS = 0xa
+	WCT_OBJECT_STATUS_WctStatusMax          WCT_OBJECT_STATUS = 0xb
+)
+
+type MINIDUMP_LOCATION_DESCRIPTOR struct {
+	DataSize uint32
+	Rva      uint32
+}
+
+type MINIDUMP_USER_STREAM struct {
+	Type       uint32
+	BufferSize uint32
+	Buffer     unsafe.Pointer
+}
+
+type MINIDUMP_CALLBACK_ROUTINE uintptr
+
+type ADDRESS64 struct {
+	Offset  uint64
+	Segment uint16
+	Mode    ADDRESS_MODE
+}
+
+type KDHELP64 struct {
+	Thread                         uint64
+	ThCallbackStack                uint32
+	ThCallbackBStore               uint32
+	NextCallback                   uint32
+	FramePointer                   uint32
+	KiCallUserMode                 uint64
+	KeUserCallbackDispatcher       uint64
+	SystemRangeStart               uint64
+	KiUserExceptionDispatcher      uint64
+	StackBase                      uint64
+	StackLimit                     uint64
+	BuildVersion                   uint32
+	RetpolineStubFunctionTableSize uint32
+	RetpolineStubFunctionTable     uint64
+	RetpolineStubOffset            uint32
+	RetpolineStubSize              uint32
+	Reserved0                      []uint64
+}
+
+type SYM_TYPE int32
+
+const (
+	SYM_TYPE_SymNone     SYM_TYPE = 0x0
+	SYM_TYPE_SymCoff     SYM_TYPE = 0x1
+	SYM_TYPE_SymCv       SYM_TYPE = 0x2
+	SYM_TYPE_SymPdb      SYM_TYPE = 0x3
+	SYM_TYPE_SymExport   SYM_TYPE = 0x4
+	SYM_TYPE_SymDeferred SYM_TYPE = 0x5
+	SYM_TYPE_SymSym      SYM_TYPE = 0x6
+	SYM_TYPE_SymDia      SYM_TYPE = 0x7
+	SYM_TYPE_SymVirtual  SYM_TYPE = 0x8
+	SYM_TYPE_NumSymTypes SYM_TYPE = 0x9
+)
 
 type PCOPYFILE2_PROGRESS_ROUTINE uintptr
 
@@ -3345,6 +4692,114 @@ const (
 	CRYPT_XML_TRANSFORM_FLAGS_CRYPT_XML_TRANSFORM_ON_STREAM        CRYPT_XML_TRANSFORM_FLAGS = 0x1
 	CRYPT_XML_TRANSFORM_FLAGS_CRYPT_XML_TRANSFORM_ON_NODESET       CRYPT_XML_TRANSFORM_FLAGS = 0x2
 	CRYPT_XML_TRANSFORM_FLAGS_CRYPT_XML_TRANSFORM_URI_QUERY_STRING CRYPT_XML_TRANSFORM_FLAGS = 0x3
+)
+
+type IMAGE_SUBSYSTEM uint16
+
+const (
+	IMAGE_SUBSYSTEM_UNKNOWN                  IMAGE_SUBSYSTEM = 0x0
+	IMAGE_SUBSYSTEM_NATIVE                   IMAGE_SUBSYSTEM = 0x1
+	IMAGE_SUBSYSTEM_WINDOWS_GUI              IMAGE_SUBSYSTEM = 0x2
+	IMAGE_SUBSYSTEM_WINDOWS_CUI              IMAGE_SUBSYSTEM = 0x3
+	IMAGE_SUBSYSTEM_OS2_CUI                  IMAGE_SUBSYSTEM = 0x5
+	IMAGE_SUBSYSTEM_POSIX_CUI                IMAGE_SUBSYSTEM = 0x7
+	IMAGE_SUBSYSTEM_NATIVE_WINDOWS           IMAGE_SUBSYSTEM = 0x8
+	IMAGE_SUBSYSTEM_WINDOWS_CE_GUI           IMAGE_SUBSYSTEM = 0x9
+	IMAGE_SUBSYSTEM_EFI_APPLICATION          IMAGE_SUBSYSTEM = 0xa
+	IMAGE_SUBSYSTEM_EFI_BOOT_SERVICE_DRIVER  IMAGE_SUBSYSTEM = 0xb
+	IMAGE_SUBSYSTEM_EFI_RUNTIME_DRIVER       IMAGE_SUBSYSTEM = 0xc
+	IMAGE_SUBSYSTEM_EFI_ROM                  IMAGE_SUBSYSTEM = 0xd
+	IMAGE_SUBSYSTEM_XBOX                     IMAGE_SUBSYSTEM = 0xe
+	IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION IMAGE_SUBSYSTEM = 0x10
+	IMAGE_SUBSYSTEM_XBOX_CODE_CATALOG        IMAGE_SUBSYSTEM = 0x11
+)
+
+type IMAGE_DLL_CHARACTERISTICS uint16
+
+const (
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_HIGH_ENTROPY_VA                               IMAGE_DLL_CHARACTERISTICS = 0x20
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE                                  IMAGE_DLL_CHARACTERISTICS = 0x40
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_FORCE_INTEGRITY                               IMAGE_DLL_CHARACTERISTICS = 0x80
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_NX_COMPAT                                     IMAGE_DLL_CHARACTERISTICS = 0x100
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_NO_ISOLATION                                  IMAGE_DLL_CHARACTERISTICS = 0x200
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_NO_SEH                                        IMAGE_DLL_CHARACTERISTICS = 0x400
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_NO_BIND                                       IMAGE_DLL_CHARACTERISTICS = 0x800
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_APPCONTAINER                                  IMAGE_DLL_CHARACTERISTICS = 0x1000
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_WDM_DRIVER                                    IMAGE_DLL_CHARACTERISTICS = 0x2000
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_GUARD_CF                                      IMAGE_DLL_CHARACTERISTICS = 0x4000
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_TERMINAL_SERVER_AWARE                         IMAGE_DLL_CHARACTERISTICS = 0x8000
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_EX_CET_COMPAT                                 IMAGE_DLL_CHARACTERISTICS = 0x1
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_EX_CET_COMPAT_STRICT_MODE                     IMAGE_DLL_CHARACTERISTICS = 0x2
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_EX_CET_SET_CONTEXT_IP_VALIDATION_RELAXED_MODE IMAGE_DLL_CHARACTERISTICS = 0x4
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_EX_CET_DYNAMIC_APIS_ALLOW_IN_PROC             IMAGE_DLL_CHARACTERISTICS = 0x8
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_EX_CET_RESERVED_1                             IMAGE_DLL_CHARACTERISTICS = 0x10
+	IMAGE_DLL_CHARACTERISTICS_IMAGE_DLLCHARACTERISTICS_EX_CET_RESERVED_2                             IMAGE_DLL_CHARACTERISTICS = 0x20
+)
+
+type IMAGE_OPTIONAL_HEADER_MAGIC uint16
+
+const (
+	IMAGE_OPTIONAL_HEADER_MAGIC_IMAGE_NT_OPTIONAL_HDR_MAGIC   IMAGE_OPTIONAL_HEADER_MAGIC = 0x20b
+	IMAGE_OPTIONAL_HEADER_MAGIC_IMAGE_NT_OPTIONAL_HDR32_MAGIC IMAGE_OPTIONAL_HEADER_MAGIC = 0x10b
+	IMAGE_OPTIONAL_HEADER_MAGIC_IMAGE_NT_OPTIONAL_HDR64_MAGIC IMAGE_OPTIONAL_HEADER_MAGIC = 0x20b
+	IMAGE_OPTIONAL_HEADER_MAGIC_IMAGE_ROM_OPTIONAL_HDR_MAGIC  IMAGE_OPTIONAL_HEADER_MAGIC = 0x107
+)
+
+type IMAGE_FILE_CHARACTERISTICS uint16
+
+const (
+	IMAGE_FILE_CHARACTERISTICS_IMAGE_FILE_RELOCS_STRIPPED         IMAGE_FILE_CHARACTERISTICS = 0x1
+	IMAGE_FILE_CHARACTERISTICS_IMAGE_FILE_EXECUTABLE_IMAGE        IMAGE_FILE_CHARACTERISTICS = 0x2
+	IMAGE_FILE_CHARACTERISTICS_IMAGE_FILE_LINE_NUMS_STRIPPED      IMAGE_FILE_CHARACTERISTICS = 0x4
+	IMAGE_FILE_CHARACTERISTICS_IMAGE_FILE_LOCAL_SYMS_STRIPPED     IMAGE_FILE_CHARACTERISTICS = 0x8
+	IMAGE_FILE_CHARACTERISTICS_IMAGE_FILE_AGGRESIVE_WS_TRIM       IMAGE_FILE_CHARACTERISTICS = 0x10
+	IMAGE_FILE_CHARACTERISTICS_IMAGE_FILE_LARGE_ADDRESS_AWARE     IMAGE_FILE_CHARACTERISTICS = 0x20
+	IMAGE_FILE_CHARACTERISTICS_IMAGE_FILE_BYTES_REVERSED_LO       IMAGE_FILE_CHARACTERISTICS = 0x80
+	IMAGE_FILE_CHARACTERISTICS_IMAGE_FILE_32BIT_MACHINE           IMAGE_FILE_CHARACTERISTICS = 0x100
+	IMAGE_FILE_CHARACTERISTICS_IMAGE_FILE_DEBUG_STRIPPED          IMAGE_FILE_CHARACTERISTICS = 0x200
+	IMAGE_FILE_CHARACTERISTICS_IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP IMAGE_FILE_CHARACTERISTICS = 0x400
+	IMAGE_FILE_CHARACTERISTICS_IMAGE_FILE_NET_RUN_FROM_SWAP       IMAGE_FILE_CHARACTERISTICS = 0x800
+	IMAGE_FILE_CHARACTERISTICS_IMAGE_FILE_SYSTEM                  IMAGE_FILE_CHARACTERISTICS = 0x1000
+	IMAGE_FILE_CHARACTERISTICS_IMAGE_FILE_DLL                     IMAGE_FILE_CHARACTERISTICS = 0x2000
+	IMAGE_FILE_CHARACTERISTICS_IMAGE_FILE_UP_SYSTEM_ONLY          IMAGE_FILE_CHARACTERISTICS = 0x4000
+	IMAGE_FILE_CHARACTERISTICS_IMAGE_FILE_BYTES_REVERSED_HI       IMAGE_FILE_CHARACTERISTICS = 0x8000
+)
+
+type IMAGE_FILE_MACHINE uint16
+
+const (
+	IMAGE_FILE_MACHINE_AXP64       IMAGE_FILE_MACHINE = 0x284
+	IMAGE_FILE_MACHINE_I386        IMAGE_FILE_MACHINE = 0x14c
+	IMAGE_FILE_MACHINE_IA64        IMAGE_FILE_MACHINE = 0x200
+	IMAGE_FILE_MACHINE_AMD64       IMAGE_FILE_MACHINE = 0x8664
+	IMAGE_FILE_MACHINE_UNKNOWN     IMAGE_FILE_MACHINE = 0x0
+	IMAGE_FILE_MACHINE_TARGET_HOST IMAGE_FILE_MACHINE = 0x1
+	IMAGE_FILE_MACHINE_R3000       IMAGE_FILE_MACHINE = 0x162
+	IMAGE_FILE_MACHINE_R4000       IMAGE_FILE_MACHINE = 0x166
+	IMAGE_FILE_MACHINE_R10000      IMAGE_FILE_MACHINE = 0x168
+	IMAGE_FILE_MACHINE_WCEMIPSV2   IMAGE_FILE_MACHINE = 0x169
+	IMAGE_FILE_MACHINE_ALPHA       IMAGE_FILE_MACHINE = 0x184
+	IMAGE_FILE_MACHINE_SH3         IMAGE_FILE_MACHINE = 0x1a2
+	IMAGE_FILE_MACHINE_SH3DSP      IMAGE_FILE_MACHINE = 0x1a3
+	IMAGE_FILE_MACHINE_SH3E        IMAGE_FILE_MACHINE = 0x1a4
+	IMAGE_FILE_MACHINE_SH4         IMAGE_FILE_MACHINE = 0x1a6
+	IMAGE_FILE_MACHINE_SH5         IMAGE_FILE_MACHINE = 0x1a8
+	IMAGE_FILE_MACHINE_ARM         IMAGE_FILE_MACHINE = 0x1c0
+	IMAGE_FILE_MACHINE_THUMB       IMAGE_FILE_MACHINE = 0x1c2
+	IMAGE_FILE_MACHINE_ARMNT       IMAGE_FILE_MACHINE = 0x1c4
+	IMAGE_FILE_MACHINE_AM33        IMAGE_FILE_MACHINE = 0x1d3
+	IMAGE_FILE_MACHINE_POWERPC     IMAGE_FILE_MACHINE = 0x1f0
+	IMAGE_FILE_MACHINE_POWERPCFP   IMAGE_FILE_MACHINE = 0x1f1
+	IMAGE_FILE_MACHINE_MIPS16      IMAGE_FILE_MACHINE = 0x266
+	IMAGE_FILE_MACHINE_ALPHA64     IMAGE_FILE_MACHINE = 0x284
+	IMAGE_FILE_MACHINE_MIPSFPU     IMAGE_FILE_MACHINE = 0x366
+	IMAGE_FILE_MACHINE_MIPSFPU16   IMAGE_FILE_MACHINE = 0x466
+	IMAGE_FILE_MACHINE_TRICORE     IMAGE_FILE_MACHINE = 0x520
+	IMAGE_FILE_MACHINE_CEF         IMAGE_FILE_MACHINE = 0xcef
+	IMAGE_FILE_MACHINE_EBC         IMAGE_FILE_MACHINE = 0xebc
+	IMAGE_FILE_MACHINE_M32R        IMAGE_FILE_MACHINE = 0x9041
+	IMAGE_FILE_MACHINE_ARM64       IMAGE_FILE_MACHINE = 0xaa64
+	IMAGE_FILE_MACHINE_CEE         IMAGE_FILE_MACHINE = 0xc0ee
 )
 
 type CRYPT_INTERFACE_REG struct {
@@ -3399,9 +4854,23 @@ type CRYPT_XML_KEY_INFO_ITEM struct {
 	WszKeyName *PWSTRElement
 }
 
+type IMAGE_DATA_DIRECTORY struct {
+	VirtualAddress uint32
+	Size           uint32
+}
+
 type SID_IDENTIFIER_AUTHORITY struct {
 	Value []uint8
 }
+
+type ADDRESS_MODE int32
+
+const (
+	ADDRESS_MODE_AddrMode1616 ADDRESS_MODE = 0x0
+	ADDRESS_MODE_AddrMode1632 ADDRESS_MODE = 0x1
+	ADDRESS_MODE_AddrModeReal ADDRESS_MODE = 0x2
+	ADDRESS_MODE_AddrModeFlat ADDRESS_MODE = 0x3
+)
 
 type CRYPT_IMAGE_REF_FLAGS uint32
 
